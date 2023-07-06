@@ -32,26 +32,22 @@
 })( jQuery );
 
 
-
-// JavaScript function to switch tabs
-function openTab(event, tabName) {
-	var i, tabContent, tabLinks;
-
-	// Hide all tab content
-	tabContent = document.getElementsByClassName("tab-content");
-	for (i = 0; i < tabContent.length; i++) {
-	tabContent[i].style.display = "none";
-	}
-
-	// Remove the "active" class from all tab links
-	tabLinks = document.getElementsByClassName("tab-link");
-	for (i = 0; i < tabLinks.length; i++) {
-	tabLinks[i].className = tabLinks[i].className.replace(" active", "");
-	}
-
-	// Show the specific tab content
-	document.getElementById(tabName).style.display = "block";
-
-	// Add the "active" class to the clicked tab link
-	event.currentTarget.className += " active";
-}
+// AJAX Function for saving details
+jQuery('body').on('click change keyup keydown','.ss-form-input', function() {
+	var form_data = jQuery("#ss_toolkit_form").serialize(); // Get form data
+	var ajax_url = 'ss_toolkit_ajax_url.ajaxurl'; // Replace with your AJAX handler URL
+	
+	jQuery.ajax({
+		type: 'POST',
+		url: ss_toolkit_ajax_url.ajaxurl,
+		data: form_data + '&action=ss_toolkit_ajax_request',
+		contentType: false,
+		processData: false,
+		success: function(response) {
+			// Handle the AJAX response
+		},
+		error: function(xhr, textStatus, errorThrown) {
+			// Handle any error that occurs during the AJAX request
+		}
+	});
+});

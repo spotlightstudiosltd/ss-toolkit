@@ -22,6 +22,10 @@
  */
 class Ss_Toolkit_Activator {
 
+	public function __construct() {
+		do_action( 'activate' );
+	}
+
 	/**
 	 * Short Description. (use period)
 	 *
@@ -30,6 +34,11 @@ class Ss_Toolkit_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		add_option( 'ss_login', true );
+		add_option( 'ss_dashboard_widget', true);
+		add_option( 'ss_shortcodes', true);
+		add_option( 'ss_removal_prevent', true);
+		add_option( 'ss_access_toolkit', true);
+		add_option( 'ss_api', true);
 	}
 }

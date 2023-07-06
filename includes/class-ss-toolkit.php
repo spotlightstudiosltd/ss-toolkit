@@ -88,6 +88,11 @@ class Ss_Toolkit {
 		//Function for listing the details of shortcode of SS Toolkit plugin
 		add_action('init', array($this,'ss_toolkit_shortcode_listing'));
 
+		//Hook functions to call Ajax 
+		add_action('wp_ajax_ss_toolkit_ajax_request', array( $this, 'ss_toolkit_ajax'));
+
+        add_action('wp_ajax_nopriv_ss_toolkit_ajax_request',array( $this, 'ss_toolkit_ajax' ));
+
 	}
 
 	/**
@@ -168,6 +173,7 @@ class Ss_Toolkit {
 
 		wp_enqueue_style('thickbox');
 		wp_enqueue_script('thickbox');
+
 	}
 
 	/**
@@ -248,7 +254,7 @@ class Ss_Toolkit {
 		echo '<h1>SS Toolskit 2.0</h1>';
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'tools';
 		?>
-		<form id="mainform" action="" enctype="multipart/form-data">
+		<form id="ss_toolkit_form" action="" enctype="multipart/form-data">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-12">
@@ -258,80 +264,81 @@ class Ss_Toolkit {
 						</h2>
 
 						<?php if($active_tab == 'tools'){?>
-						<div id="tab1 tools" style="display:block;">
-							<table class="widefat" border="0">
-								<tr>
-									<td>
-										<div class="ss-toolkit-card">
-											<div class="ss-toolkit-card-content">
-												<h3>SpotLight Login</h3>
-												<p>Enables the Spotlight Studios Login Screen</p>
+							<div id="tab1 tools" style="display:block;">
+								<table class="widefat" border="0">
+									<tr>
+										<td>
+											<div class="ss-toolkit-card">
+												<div class="ss-toolkit-card-content">
+													<h3>SpotLight Login</h3>
+													<p>Enables the Spotlight Studios Login Screen</p>
 
-												<div class="ss-toolkit-card-bottom">
-													<a href="?page=ss-toolkit&tab=settings" class="thickbox page-title-action">Settings</a>
+													<div class="ss-toolkit-card-bottom">
+														<a href="?page=ss-toolkit&tab=settings" class="page-title-action">Settings</a>
 
-													<label class="toggle-switch">
-														<input type="checkbox">
-														<span class="slider"></span>
-													</label>
+														<label class="toggle-switch">
+															<input type="checkbox" <?php echo (get_option('ss_login') == 1)?'checked ':""; ?> name="ss_login" class="ss-form-input">
+															<span class="slider"></span>
+														</label>
+													</div>
 												</div>
 											</div>
-										</div>
-									</td>
+										</td>
 
-									<td>
-										<div class="ss-toolkit-card">
-											<div class="ss-toolkit-card-content">
-												<h3>Dashboard Widget</h3>
-												<p>Dispalys a Spotlight studios widget with useful links and removes useless widgets</p>
-												
-												<div class="ss-toolkit-card-bottom">
-													<label class="toggle-switch">
-														<input type="checkbox">
-														<span class="slider"></span>
-													</label>
+										<td>
+											<div class="ss-toolkit-card">
+												<div class="ss-toolkit-card-content">
+													<h3>Dashboard Widget</h3>
+													<p>Dispalys a Spotlight studios widget with useful links and removes useless widgets</p>
+													
+													<div class="ss-toolkit-card-bottom">
+														<div></div>
+														<label class="toggle-switch">
+															<input type="checkbox" <?php echo (get_option('ss_dashboard_widget') == 1)?'checked':''; ?> name="ss_dsahboardwidget" class="ss-form-input">
+															<span class="slider"></span>
+														</label>
+													</div>
 												</div>
 											</div>
-										</div>
-									</td>
+										</td>
 
-									<td>
-										<div class="ss-toolkit-card">
-											<div class="ss-toolkit-card-content">
-												<h3>SS Shortcodes</h3>
-												<p>Enables common, useful shortcuts</p>
+										<td>
+											<div class="ss-toolkit-card">
+												<div class="ss-toolkit-card-content">
+													<h3>SS Shortcodes</h3>
+													<p>Enables common, useful shortcuts</p>
 
-												<div class="ss-toolkit-card-bottom">
-													<a href="#TB_inline?width=600&height=400&inlineId=my-thickbox-content" class="thickbox page-title-action">View</a>
-												
-													<label class="toggle-switch">
-														<input type="checkbox">
-														<span class="slider"></span>
-													</label>
+													<div class="ss-toolkit-card-bottom">
+														<a href="#TB_inline?width=600&height=400&inlineId=my-thickbox-content" class="thickbox page-title-action">View</a>
+													
+														<label class="toggle-switch">
+															<input type="checkbox" <?php echo (get_option('ss_shortcodes') == 1)?'checked':''; ?> name="ss_shortcode" class="ss-form-input">
+															<span class="slider"></span>
+														</label>
+													</div>
 												</div>
 											</div>
-										</div>
-									</td>
-								</tr>
-							</table>
-						</div>
+										</td>
+									</tr>
+								</table>
+							</div>
 						<?php } ?>
 						<?php if($active_tab == 'settings'){?>
-						<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2">
-							<div class="container">
-								<div class="row">
-									<div class="col-md-12 form-group">
-										<h5>General</h5>
-										<input type="checkbox" name="removal" id="sstoolkit-removal"> Prevent deactivation/removal of SS Toolkit </br>
-										<input type="checkbox" name="access" id="spotlight-access"> Prevent access if user is not "Spotlight"
-									</div>
-									<div class="col-md-12 form-group">
-										<h5>API Keys</h5>
-										<p>GA 4: <input type="text" name="api_keys" id="api_keys"></p>
+							<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2">
+								<div class="container">
+									<div class="row">
+										<div class="col-md-12 ss-toolkit-card2">
+											<h3>General</h3>
+											<input type="checkbox" name="ss_removal_prevent" id="sstoolkit-removal" <?php echo (get_option('ss_removal_prevent') == 1)? 'checked':''; ?> class="ss-form-input"> Prevent deactivation/removal of SS Toolkit </br>
+											<input type="checkbox" name="ss_access_toolkit" id="spotlight-access"  <?php echo (get_option('ss_access_toolkit') == 1)? 'checked':""; ?> class="ss-form-input"> Prevent access if user is not "Spotlight"
+										</div>
+										<div class="col-md-12 ss-toolkit-card2">
+											<h3>API Keys</h3>
+											<p><span>GA 4:</span> <input type="text" name="ss_api_key" id="ss_api_key" value="<?php echo (get_option('ss_api') != null)? get_option('ss_api') :""; ?>"></p>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
 						<?php } ?>
 					</div>
 				</div>
@@ -421,5 +428,10 @@ class Ss_Toolkit {
 			</table>
 		</div>
 	<?php
+	}
+
+	public function ss_toolkit_ajax() { 
+		echo "hai";
+		die;
 	}
 }	

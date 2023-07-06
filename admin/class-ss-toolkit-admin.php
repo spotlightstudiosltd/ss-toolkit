@@ -97,7 +97,7 @@ class Ss_Toolkit_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ss-toolkit-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_localize_script('ss-toolkit-ajax-script', 'ss_toolkit_ajax_url',array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ));
 	}
 
 }
