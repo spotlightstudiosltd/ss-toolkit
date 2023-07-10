@@ -96,8 +96,16 @@ class Ss_Toolkit_Admin {
 		 * class.
 		 */
 
+		// // wp_register_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/jquery.min.js', array(), $this->version, false );
+		// wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.3.min.js', false, '3.6.0');
+
+		// wp_deregister_script('jquery');
+		// wp_register_script('jquery', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js', false, '3.5.1',true);
+		// wp_enqueue_script('jquery');
+
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ss-toolkit-admin.js', array( 'jquery' ), $this->version, false );
-		wp_localize_script('ss-toolkit-ajax-script', 'ss_toolkit_ajax_url',array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ));
+
+
 	}
 
 }

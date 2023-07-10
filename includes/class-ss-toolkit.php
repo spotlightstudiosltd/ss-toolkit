@@ -79,19 +79,29 @@ class Ss_Toolkit {
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 
+		add_action('admin_enqueue_scripts', array($this,'ss_toolkit_enqueueAdmin'));
+
 		// Hook the function to the admin_menu action to add the submenu page
 		add_action('admin_menu', array($this,'ss_toolkit_add_submenu_page'));
 
 		//Hook function to Show the Spotlight Dashboard Widget
-		add_action('wp_dashboard_setup', array($this,'ss_toolkit_add_dashboard_widgets'));
+		if(get_option('ss_dashboard_widget') == 1){
+			add_action('wp_dashboard_setup', array($this,'ss_toolkit_add_dashboard_widgets'));
+		}
 
 		//Function for listing the details of shortcode of SS Toolkit plugin
 		add_action('init', array($this,'ss_toolkit_shortcode_listing'));
 
 		//Hook functions to call Ajax 
-		add_action('wp_ajax_ss_toolkit_ajax_request', array( $this, 'ss_toolkit_ajax'));
+		add_action('wp_ajax_ss_toolkit_ajax_request', array($this,'ss_toolkit_ajax_request'));
+        add_action('wp_ajax_nopriv_ss_toolkit_ajax_request',array($this,'ss_toolkit_ajax_request') );
 
-        add_action('wp_ajax_nopriv_ss_toolkit_ajax_request',array( $this, 'ss_toolkit_ajax' ));
+
+		//Hook function to add Google Analytics tag to Header
+		add_action('wp_head', array($this,'add_googleanalytics_header'));
+		
+		//Hook function to remove deactivation permission for plugins
+		add_filter('plugin_action_links', array($this,'hide_plugin_deactivation'));
 
 	}
 
@@ -169,12 +179,19 @@ class Ss_Toolkit {
 		$plugin_admin = new Ss_Toolkit_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		wp_enqueue_style('thickbox');
 		wp_enqueue_script('thickbox');
 
 	}
+
+	function ss_toolkit_enqueueAdmin() {
+		// echo plugin_dir_url( dirname( __FILE__ ) ) ;
+		// die;
+		wp_enqueue_script( $this->get_plugin_name(), plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/ss-toolkit-admin.js', array( 'jquery' ), $this->version, false );
+		wp_localize_script('ss-toolkit', 'ss_toolkit_ajax_url',array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ));
+    }
 
 	/**
 	 * Register all of the hooks related to the public-facing functionality
@@ -246,7 +263,6 @@ class Ss_Toolkit {
 			array($this,'ss_toolkit_menu_page') // Callback function to display the page content
 		);
 	}
-
 	
 	// Add the submenu page under the "Tools" menu
 	function ss_toolkit_menu_page() {
@@ -254,16 +270,17 @@ class Ss_Toolkit {
 		echo '<h1>SS Toolskit 2.0</h1>';
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'tools';
 		?>
-		<form id="ss_toolkit_form" action="" enctype="multipart/form-data">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12">
-						<h2 class="nav-tab-wrapper">
-							<a href="?page=ss-toolkit&tab=tools" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>">Tools</a>
-							<a href="?page=ss-toolkit&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
-						</h2>
-
-						<?php if($active_tab == 'tools'){?>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<h2 class="nav-tab-wrapper">
+						<a href="?page=ss-toolkit&tab=tools" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>">Tools</a>
+						<a href="?page=ss-toolkit&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
+					</h2>
+					<p class="ss_toolkit_message" style="display:block"></p>  
+					<?php if($active_tab == 'tools'){?>
+						<form id="ss_toolkit_tools_form" action="">
+							<input type="hidden" name="from_toolkit_form"  id="from_toolkit_form" value="tools_form"> 
 							<div id="tab1 tools" style="display:block;">
 								<table class="widefat" border="0">
 									<tr>
@@ -277,7 +294,7 @@ class Ss_Toolkit {
 														<a href="?page=ss-toolkit&tab=settings" class="page-title-action">Settings</a>
 
 														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_login') == 1)?'checked ':""; ?> name="ss_login" class="ss-form-input">
+															<input type="checkbox" <?php echo (get_option('ss_login') == 1)?'checked ':""; ?> name="ss_login" id="ss_login" class="ss-form-input">
 															<span class="slider"></span>
 														</label>
 													</div>
@@ -294,7 +311,7 @@ class Ss_Toolkit {
 													<div class="ss-toolkit-card-bottom">
 														<div></div>
 														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_dashboard_widget') == 1)?'checked':''; ?> name="ss_dsahboardwidget" class="ss-form-input">
+															<input type="checkbox" <?php echo (get_option('ss_dashboard_widget') == 1)?'checked':''; ?> name="ss_dashboardwidget" id="ss_dashboardwidget" class="ss-form-input">
 															<span class="slider"></span>
 														</label>
 													</div>
@@ -312,7 +329,7 @@ class Ss_Toolkit {
 														<a href="#TB_inline?width=600&height=400&inlineId=my-thickbox-content" class="thickbox page-title-action">View</a>
 													
 														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_shortcodes') == 1)?'checked':''; ?> name="ss_shortcode" class="ss-form-input">
+															<input type="checkbox" <?php echo (get_option('ss_shortcodes') == 1)?'checked':''; ?> name="ss_shortcode" id="ss_shortcode" class="ss-form-input">
 															<span class="slider"></span>
 														</label>
 													</div>
@@ -322,8 +339,11 @@ class Ss_Toolkit {
 									</tr>
 								</table>
 							</div>
-						<?php } ?>
-						<?php if($active_tab == 'settings'){?>
+						</form>
+					<?php } ?>
+					<?php if($active_tab == 'settings'){?>
+						<form action="" id="ss_toolkit_settings_form">
+							<input type="hidden" name="from_toolkit_form" id="from_toolkit_form" value="settings_form"> 
 							<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2">
 								<div class="container">
 									<div class="row">
@@ -334,16 +354,16 @@ class Ss_Toolkit {
 										</div>
 										<div class="col-md-12 ss-toolkit-card2">
 											<h3>API Keys</h3>
-											<p><span>GA 4:</span> <input type="text" name="ss_api_key" id="ss_api_key" value="<?php echo (get_option('ss_api') != null)? get_option('ss_api') :""; ?>"></p>
+											<p><span>GA 4:</span> <input type="text" name="ss_api_key" id="ss_api_key" class="ss-form-input" value="<?php echo (get_option('ss_api') != null)? get_option('ss_api') :""; ?>"></p>
 										</div>
 									</div>
 								</div>
 							</div>
-						<?php } ?>
-					</div>
+						</form>
+					<?php } ?>
 				</div>
 			</div>
-		</form>
+		</div>
 		<?php
 
 	}
@@ -430,8 +450,66 @@ class Ss_Toolkit {
 	<?php
 	}
 
-	public function ss_toolkit_ajax() { 
-		echo "hai";
-		die;
+	function ss_toolkit_ajax_request() { 
+
+	
+		if($_POST['from_toolkit_form'] == 'tools_form'){
+		
+			if(get_option('ss_login') != $_POST['ss_login']){
+				update_option('ss_login',$_POST['ss_login']);
+			}
+
+			if(get_option('ss_dashboard_widget') != $_POST['ss_dashboardwidget']){
+				update_option('ss_dashboard_widget',$_POST['ss_dashboardwidget']);
+			}
+
+			if(get_option('ss_shortcodes') != $_POST['ss_shortcode']){
+				update_option('ss_shortcodes',$_POST['ss_shortcode']);
+			}
+		}
+
+		if($_POST['from_toolkit_form'] == 'settings_form'){
+			if(get_option('ss_removal_prevent') != $_POST['sstoolkit_removal']){
+				update_option('ss_removal_prevent',$_POST['sstoolkit_removal']);
+			}
+
+			if(get_option('ss_access_toolkit') != $_POST['spotlight_access']){
+				update_option('ss_access_toolkit',$_POST['spotlight_access']);
+			}
+
+			if(get_option('ss_api') != $_POST['ss_api_key']){
+				update_option('ss_api',$_POST['ss_api_key']);
+			}
+		}
+
+		$return = array(
+			'message' => __( 'Setting saved', 'SSToolkit' ),
+			'status'      => true
+		);
+		wp_send_json_success( $return );       
+
 	}
-}	
+
+	function add_googleanalytics_header(){
+
+		// Paste your Google Analytics tracking code from Step 4 here
+		
+	}
+
+
+	function hide_plugin_deactivation($actions, $plugin_file, $plugin_data, $context) {
+		// Specify the plugin file(s) you want to hide the deactivation link for
+		$plugins_to_hide = array(
+			'plugin-folder/plugin-file.php',
+			'another-plugin-folder/another-plugin-file.php'
+		);
+	
+		if (in_array($plugin_file, $plugins_to_hide)) {
+			// Remove the 'Deactivate' action from the plugin's actions
+			unset($actions['deactivate']);
+		}
+	
+		return $actions;
+	}
+
+}		
