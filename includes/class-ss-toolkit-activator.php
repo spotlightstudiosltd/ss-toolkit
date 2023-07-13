@@ -3,7 +3,7 @@
 /**
  * Fired during plugin activation
  *
- * @link       https://www.g2techsoft.com
+ * @link       https://spotlightstudios.co.uk/
  * @since      1.0.0
  *
  * @package    Ss_Toolkit
@@ -18,7 +18,7 @@
  * @since      1.0.0
  * @package    Ss_Toolkit
  * @subpackage Ss_Toolkit/includes
- * @author     G2 TechSoft <lingesh@g2techsoft.com>
+ * @author     Spotlight <info@spotlightstudios.co.uk>
  */
 class Ss_Toolkit_Activator {
 
@@ -34,11 +34,11 @@ class Ss_Toolkit_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		add_option( 'ss_login', true );
-		add_option( 'ss_dashboard_widget', true);
-		add_option( 'ss_shortcodes', true);
-		add_option( 'ss_removal_prevent', true);
-		add_option( 'ss_access_toolkit', true);
-		add_option( 'ss_api', true);
+		add_option( 'ss_login', false );
+		add_option( 'ss_dashboard_widget', false);
+		add_option( 'ss_shortcodes', false);
+		add_option( 'ss_removal_prevent', false);
+		add_option( 'ss_access_toolkit', false);
+		add_option( 'ss_api', '');
 	}
 }

@@ -3,7 +3,7 @@
 /**
  * The public-facing functionality of the plugin.
  *
- * @link       https://www.g2techsoft.com
+ * @link       https://spotlightstudios.co.uk/
  * @since      1.0.0
  *
  * @package    Ss_Toolkit
@@ -18,7 +18,7 @@
  *
  * @package    Ss_Toolkit
  * @subpackage Ss_Toolkit/public
- * @author     G2 TechSoft <lingesh@g2techsoft.com>
+ * @author     Spotlight <info@spotlightstudios.co.uk>
  */
 class Ss_Toolkit_Public {
 
@@ -74,7 +74,7 @@ class Ss_Toolkit_Public {
 		 */
 
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/ss-toolkit-public.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( 'uikit', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/uikit.min.css' );
 	}
 
 	/**
@@ -97,7 +97,8 @@ class Ss_Toolkit_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/ss-toolkit-public.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script( 'uikit', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit.min.js', array( 'jquery' ), $this->version, false );  
+		wp_enqueue_script( 'uikit-min', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit-icons.min.js', array( 'jquery' ), $this->version, false ); 
 	}
 
 }

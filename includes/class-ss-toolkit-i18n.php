@@ -6,7 +6,7 @@
  * Loads and defines the internationalization files for this plugin
  * so that it is ready for translation.
  *
- * @link       https://www.g2techsoft.com
+ * @link       https://spotlightstudios.co.uk/
  * @since      1.0.0
  *
  * @package    Ss_Toolkit
@@ -22,7 +22,7 @@
  * @since      1.0.0
  * @package    Ss_Toolkit
  * @subpackage Ss_Toolkit/includes
- * @author     G2 TechSoft <lingesh@g2techsoft.com>
+ * @author     Spotlight <info@spotlightstudios.co.uk>
  */
 class Ss_Toolkit_i18n {
 

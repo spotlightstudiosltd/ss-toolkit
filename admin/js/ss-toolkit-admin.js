@@ -33,20 +33,20 @@
 
 jQuery(document).ready(function($) {
 
-	
-	$("#ss_login").on('change', function() {
-		if ($(this).is(':checked')) {
-			$(this).attr('value', 'true');
-		}
-		else {
-			$(this).attr('value', 'false');
-		}
+	// Open the popup when the button is clicked
+	$('#ss-popup-btn').click(function() {
+		$('#ss-popup').fadeIn();
 	});
 
-// AJAX Function for saving details
-	jQuery('body').on('click blur','.ss-form-input', function() {
+	// Close the popup when the close button is clicked
+	$('#ss-close-btn').click(function() {
+		$('#ss-popup').fadeOut();
+	});
+	
+    // AJAX Function for saving details
+	jQuery('body').on('change blur','.ss-form-input', function() {
 
-		jQuery('.ss_toolkit_message').text('Please wait...');
+		jQuery('.ss_toolkit_message').text('Please wait...').css('display','block');
 
 		var from_toolkit_form = jQuery("#from_toolkit_form").val();
 
@@ -72,13 +72,16 @@ jQuery(document).ready(function($) {
 				'from_toolkit_form' : from_toolkit_form
 			},
 			success: function(response) {
-				jQuery('.ss_toolkit_message').text('Settings Saved');
-				console.log("Working");
+				jQuery('.ss_toolkit_message').text(response.data.message).css('display','block');
+				setTimeout(function() {
+                    jQuery('.ss_toolkit_message').css('display','none');
+                }, 4000);
 			},
 			error: function(xhr, textStatus, errorThrown) {
-				// Handle any error that occurs during the AJAX request
-				$('.ss_toolkit_message').text('Settings Saved');
-				console.log("Not Working");
+				jQuery('.ss_toolkit_message').text("Something went worng").css('display','block');
+				setTimeout(function() {
+                    jQuery('.ss_toolkit_message').css('display','none');
+                }, 4000);
 			}
 		});
 	});

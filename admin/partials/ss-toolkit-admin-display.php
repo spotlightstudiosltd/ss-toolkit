@@ -5,7 +5,7 @@
  *
  * This file is used to markup the admin-facing aspects of the plugin.
  *
- * @link       https://www.g2techsoft.com
+ * @link       https://spotlightstudios.co.uk/
  * @since      1.0.0
  *
  * @package    Ss_Toolkit

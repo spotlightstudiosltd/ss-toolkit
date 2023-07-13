@@ -8,19 +8,19 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://www.g2techsoft.com
+ * @link              https://spotlightstudios.co.uk/
  * @since             1.0.0
  * @package           Ss_Toolkit
  *
  * @wordpress-plugin
  * Plugin Name:       SS Toolkit
- * Plugin URI:        https://https://spotlightstudios.co.uk/
+ * Plugin URI:        https://spotlightstudios.co.uk/
  * Description:       To build a plugin for WordPress that we can install on all websites that we build. The plugin has a 
  * few tools, primarily to advertise our service, provide Spotlight Branding throughout the client 
  * experience, and provide some useful tools that we integrate into most of our websites.
  * Version:           1.0.0
- * Author:            G2 TechSoft
- * Author URI:        https://www.g2techsoft.com
+ * Author:            Spotlight
+ * Author URI:        https://spotlightstudios.co.uk/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       ss-toolkit
