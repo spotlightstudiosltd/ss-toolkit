@@ -441,7 +441,8 @@ class Ss_Toolkit {
 		</div>
 		
 		<?php }else{
-			echo "you are not allowed to access the plugin page";
+			$html = '<h2 style="padding: 10px;text-align: center;">Access to the plugin page is not granted. Please reach out to the administrator for authorization.</h2>';
+			echo $html;
 			exit;
 		}
 
