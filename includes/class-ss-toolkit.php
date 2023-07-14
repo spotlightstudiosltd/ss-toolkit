@@ -84,6 +84,7 @@ class Ss_Toolkit {
 		// Hook the function to the admin_menu action to add the submenu page
 		add_action('admin_menu', array($this,'ss_toolkit_add_submenu_page'));
 
+
 		//Hook function to Show the Spotlight Dashboard Widget
 		if(get_option('ss_dashboard_widget') == 1){
 			add_action('wp_dashboard_setup', array($this,'ss_toolkit_add_dashboard_widgets'));
@@ -112,12 +113,6 @@ class Ss_Toolkit {
 		if(get_option('ss_shortcodes') == 1){
 			add_action('init', array($this,'ss_plugin_shortcodes'));
 		}
-
-		//&& strtolower(wp_get_current_user()) == 'soptlight'
-		// if (get_option('ss_access_toolkit') == 0  ) {
-		// 	// Disable or hide the plugin functionality
-		// 	add_action( 'admin_init',  array($this,'disable_plugin_functionality') );
-		// }
 	}
 
 	/**
@@ -194,10 +189,6 @@ class Ss_Toolkit {
 		$plugin_admin = new Ss_Toolkit_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		// $this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
-
-		// wp_enqueue_style('thickbox');
-		// wp_enqueue_script('thickbox');
 
 	}
 
@@ -205,7 +196,6 @@ class Ss_Toolkit {
 	
 		wp_enqueue_script( $this->get_plugin_name(), plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/ss-toolkit-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script('ss-toolkit', 'ss_toolkit_ajax_url',array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ));
-		// wp_enqueue_style( 'custom-login-uikit', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/uikit.min.css' );
     }
 
 	/**
@@ -284,12 +274,16 @@ class Ss_Toolkit {
 	 * Function to Plugin Admin page
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function ss_toolkit_admin_page() {
 		// Page content goes here (you can put your HTML and PHP code for the custom tools)
 		echo '<h1>SS Toolskit 2.0</h1>';
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'tools';
+		$current_user = wp_get_current_user();
+		$user_id = $current_user->user_login;
+		if((strtolower($current_user->user_login) != 'spotlight' && get_option('ss_access_toolkit') == 0) || strtolower($current_user->user_login) == 'spotlight' && get_option('ss_access_toolkit') == 0 ||
+		    strtolower($current_user->user_login) == 'spotlight' && get_option('ss_access_toolkit') == 1){
 		?>
 		<div class="container">
 			<div class="row">
@@ -303,7 +297,7 @@ class Ss_Toolkit {
 					<?php if($active_tab == 'tools'){?>
 						<form id="ss_toolkit_tools_form" action="">
 							<input type="hidden" name="from_toolkit_form"  id="from_toolkit_form" value="tools_form"> 
-							<div id="tab1 tools" style="display:block;">
+							<div id="tab1 tools" style="display:block;" class="tab1">
 								<table class="widefat" border="0">
 									<tr>
 										<td>
@@ -445,7 +439,11 @@ class Ss_Toolkit {
 				</div>
 			</div>
 		</div>
-		<?php
+		
+		<?php }else{
+			echo "you are not allowed to access the plugin page";
+			exit;
+		}
 
 	}
 
@@ -454,7 +452,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function ss_toolkit_add_dashboard_widgets() {
 		wp_add_dashboard_widget(
@@ -470,7 +468,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function ss_toolkit_dashboard_widget() {
 		?>
@@ -490,7 +488,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function ss_toolkit_ajax_request() { 
 
@@ -543,7 +541,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function add_googleanalytics_header(){ 
 		
@@ -574,7 +572,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function hide_plugin_deactivation($actions, $plugin_file, $plugin_data, $context) {
 		// Specify the plugin file(s) you want to hide the deactivation link for
@@ -595,7 +593,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function ss_custom_login_scripts() {
 		wp_enqueue_style( 'custom-login', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/ss-custom-login.css' );
@@ -611,7 +609,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function custom_login_page_template() {
 		// Load your custom login template file
@@ -639,6 +637,7 @@ class Ss_Toolkit {
 			// Remove the default login form
 			add_filter('login_form', '__return_empty_string');
 		}
+		
 	}
 
 	/**
@@ -646,7 +645,7 @@ class Ss_Toolkit {
 	 * 
 	 * 
 	 * @since    1.0.0
-	 * @access   private
+	 * @access   public
 	 */
 	function ss_plugin_shortcodes() {
 
@@ -657,7 +656,7 @@ class Ss_Toolkit {
 		 * color,icon,number
 		 * 
 		 * @since    1.0.0
-		 * @access   private
+		 * @access   public
 		 */
 		function ss_5star($atts) {
 			extract(shortcode_atts(array(
@@ -685,7 +684,7 @@ class Ss_Toolkit {
 		 * 
 		 * 
 		 * @since    1.0.0
-	 	 * @access   private
+	 	 * @access   public
 		 */
 		function ss_footer($atts) {
 			$site_title = get_bloginfo( 'name' );
@@ -728,7 +727,7 @@ class Ss_Toolkit {
 		 * no params
 		 * 
 		 * @since    1.0.0
-	     * @access   private
+	     * @access   public
 		 */
 		function ss_logout() {
 			$html = '<form action="'.esc_url(wp_logout_url()).'" method="post" class="logout">';
@@ -767,7 +766,7 @@ class Ss_Toolkit {
 		 * width,height
 		 * 
 		 * @since    1.0.0
-	 	 * @access   private
+	 	 * @access   public
 		 * 
 		 */
 		function ss_placekitten($atts) {
@@ -791,7 +790,7 @@ class Ss_Toolkit {
 		 * 
 		 * 
 		 * @since    1.0.0
-	     * @access   private
+	     * @access   public
 		 */
 		function ss_progressbar($atts) {
 			extract(shortcode_atts(array(
@@ -815,7 +814,7 @@ class Ss_Toolkit {
 		 * p(paragraph),l(lines)
 		 * 
 		 * @since    1.0.0
-	 	 * @access   private
+	 	 * @access   public
 		 */
 		function ss_lorum($atts) {
 			// Extract shortcode attributes
@@ -860,7 +859,7 @@ class Ss_Toolkit {
 		 * list_class,box_class
 		 * 
 		 * @since    1.0.0
-	     * @access   private
+	     * @access   public
 		 */
 		function ss_sitemap($atts) {
 			// Shortcode attributes
@@ -890,25 +889,5 @@ class Ss_Toolkit {
 			return $output;
 		}
 		add_shortcode('ss_sitemap', 'ss_sitemap');
-	}
-
-	/**
-	 * Function to disable or hide the plugin functionality
-	 * 
-	 * 
-	 * * @since    1.0.0
-	 * @access   private
-	 */
-	function disable_plugin_functionality() {
-		// You can customize this function according to your specific plugin requirements
-
-		if ( is_user_logged_in() ) {
-			// Current user is logged in,
-			$current_user = wp_get_current_user();
-			$user_id = $current_user->ID;
-			if($current_user->user_login != 'spotlight'){
-				// die( 'You do not have permission to access this plugin.' );
-			}
-		}
 	}
 }		

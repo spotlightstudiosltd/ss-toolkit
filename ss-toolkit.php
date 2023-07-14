@@ -15,9 +15,7 @@
  * @wordpress-plugin
  * Plugin Name:       SS Toolkit
  * Plugin URI:        https://spotlightstudios.co.uk/
- * Description:       To build a plugin for WordPress that we can install on all websites that we build. The plugin has a 
- * few tools, primarily to advertise our service, provide Spotlight Branding throughout the client 
- * experience, and provide some useful tools that we integrate into most of our websites.
+ * Description:       This plugin has a few tools, primarily to advertise our service, provide Spotlight Branding throughout the client experience, and provide some useful tools that we integrate into most of our websites.
  * Version:           1.0.0
  * Author:            Spotlight
  * Author URI:        https://spotlightstudios.co.uk/

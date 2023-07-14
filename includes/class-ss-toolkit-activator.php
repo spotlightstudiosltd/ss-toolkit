@@ -34,11 +34,11 @@ class Ss_Toolkit_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		add_option( 'ss_login', false );
-		add_option( 'ss_dashboard_widget', false);
-		add_option( 'ss_shortcodes', false);
-		add_option( 'ss_removal_prevent', false);
-		add_option( 'ss_access_toolkit', false);
+		add_option( 'ss_login', 0 );
+		add_option( 'ss_dashboard_widget', 0);
+		add_option( 'ss_shortcodes', 0);
+		add_option( 'ss_removal_prevent', 0);
+		add_option( 'ss_access_toolkit', 0);
 		add_option( 'ss_api', '');
 	}
 }

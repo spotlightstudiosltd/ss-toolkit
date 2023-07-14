@@ -17,8 +17,7 @@
         </div>
         <div class="page-form">
             <div class="form-logo">
-                <!-- <img src="<?php //echo plugin_dir_url( dirname( __FILE__ ) ). 'admin/images/logo.svg'?>" alt=""> -->
-                <img src="admin/images/logo.svg" alt="">
+                <img src="<?php echo plugin_dir_url( dirname( __FILE__ ) ). 'admin/images/logo.svg'?>" alt="">
             </div>
             <form id="custom-login-form" action="<?php echo esc_url(wp_login_url()); ?>" method="post">
                 <p>
@@ -28,6 +27,9 @@
                 <p>
                     <label for="user_pass"></label>
                     <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" placeholder="<?php esc_html_e('Password'); ?>"/>
+                </p>
+                <p>
+                    <input type="checkbox" name="remeber" id="remeber" value="" > <?php esc_html_e('Remember me'); ?>
                 </p>
                 <p class="submit">
                     <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary" value="<?php esc_attr_e('Log In'); ?>" />

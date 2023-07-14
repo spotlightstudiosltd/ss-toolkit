@@ -3,7 +3,17 @@
  * included in this file.
  */
 
- .toggle-switch {
+.tab1{
+  height: 80vh;
+  background-color: #FFF;
+}
+
+.tab1 table{
+  border: none;
+  box-shadow: none;
+}
+
+.toggle-switch {
   position: relative;
   display: inline-block;
   width: 44px;
@@ -50,6 +60,7 @@ input:checked + .slider:before {
   display: block;
   border: 1px solid #c3c4c7;
   background: #FFF;
+  height: 80vh;
 }
 
 .ss-toolkit-card {
@@ -99,7 +110,7 @@ input:checked + .slider:before {
 }
 
 .ss-toolkit-tab2 .ss-toolkit-card2{
-  padding: 10px;
+  padding: 20px;
   margin: 10px;
   border: 1px solid #ccc;
   border-radius: 13px;
@@ -148,4 +159,9 @@ input:checked + .slider:before {
   font-size: 14px;
   color: green;
   font-weight: bold;
+}
+
+.ss-toolkit-card2 span{
+  margin-right: 25px;
+  font-size: 14px
 }
