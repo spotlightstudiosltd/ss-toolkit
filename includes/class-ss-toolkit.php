@@ -665,12 +665,15 @@ class Ss_Toolkit {
 				'icon' => 'star',
 				'number' => 5
 			), $atts));
-
-			$html = '<i class="uk-icon-' . $icon . '" uk-icon="' . $icon . '" style="color: ' . $color . ';"></i>';
-			$html .= '<i class="uk-icon-' . $icon . '"  uk-icon="' . $icon . '" style="color: ' . $color . ';"></i>';
-			$html .= '<i class="uk-icon-' . $icon . '" uk-icon="' . $icon . '" style="color: ' . $color . ';"></i>';
-			$html .= '<i class="uk-icon-' . $icon . '" uk-icon="' . $icon . '" style="color: ' . $color . ';"></i>';
-			$html .= '<i class="uk-icon-' . $icon . '" uk-icon="' . $icon . '" style="color: ' . $color . ';"></i>';
+			
+			$html = "";
+			if($number <= 5){
+				for($i=1; $i<=$number; $i++){
+					$html .= '<i class="uk-icon-' . $icon . '"  uk-icon="' . $icon . '" style="color: ' . $color . ';"></i>';
+				}
+			}else{
+				$html .= "Please provide a number that is five or lower.";
+			}
 
 			return $html;
 		}
@@ -755,7 +758,9 @@ class Ss_Toolkit {
 				'text' => 'Placeholder',
 				'ext' => 'jpg',
 			), $atts));
-			return '<img src="https://placeholder.com/'. $width . 'x' . $height . '/'. $bg . '/'. $text_colour . '/'. $ext . '&text=' . $text . '" />';
+
+			$html = '<img src="https://placehold.co/'. $width . 'x' . $height . '/'. $bg . '/'. $text_colour . '/'. $ext .'?text=' . $text . '" />';
+			return $html;
 		}
 		add_shortcode('ss_placeholder', 'ss_placeholder');
 
