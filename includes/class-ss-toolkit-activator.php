@@ -40,5 +40,7 @@ class Ss_Toolkit_Activator {
 		add_option( 'ss_removal_prevent', 0);
 		add_option( 'ss_access_toolkit', 0);
 		add_option( 'ss_api', '');
+		add_option( 'ss_rss_feed_link', '');
+		add_option( 'ss_background_image', '');
 	}
 }

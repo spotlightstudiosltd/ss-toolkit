@@ -119,7 +119,7 @@ input:checked + .slider:before {
 
 /* ShortCode Popup */
 
-#ss-popup {
+.ss-popup {
   display: none;
   position: fixed;
   top: 0;
@@ -130,7 +130,7 @@ input:checked + .slider:before {
   z-index: 9999;
 }
 
-#ss-popup-content {
+.ss-popup-content {
   background-color: #fff;
   max-width: 65%;
   margin: 100px auto;
@@ -141,17 +141,17 @@ input:checked + .slider:before {
   overflow: auto;
 }
 
-#ss-close-popup {
+.ss-close-popup {
   margin-top: 10px;
 }
 
-#ss-pop-header{
+.ss-pop-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-#ss-close-btn{
+.ss-close-btn{
   font-size: 16px;
 }
 
@@ -166,4 +166,8 @@ input:checked + .slider:before {
 .ss-toolkit-card2 span{
   margin-right: 25px;
   font-size: 14px
+}
+
+.ss-popup input{
+  width: 100%;
 }

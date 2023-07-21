@@ -33,16 +33,27 @@
 
 jQuery(document).ready(function($) {
 
-	// Open the popup when the button is clicked
-	$('#ss-popup-btn').click(function() {
-		$('#ss-popup').fadeIn();
+	// Open the ShortCode popup when the button is clicked
+	$('#ss-shortcode-popup-btn').click(function() {
+		$('#ss-shortcode-popup').fadeIn();
 	});
 
-	// Close the popup when the close button is clicked
-	$('#ss-close-btn').click(function() {
-		$('#ss-popup').fadeOut();
+	// Close the ShortCode popup when the close button is clicked
+	$('#ss-shortcode-close-btn').click(function() {
+		$('#ss-shortcode-popup').fadeOut();
 	});
 	
+
+	// Open the Login Settings popup when the button is clicked
+	$('#ss-login-setting-popup-btn').click(function() {
+		$('#ss-login-setting-popup').fadeIn();
+	});
+
+	// Close the Login Settings popup when the close button is clicked
+	$('#ss-login-setting-close-btn').click(function() {
+		$('#ss-login-setting-popup').fadeOut();
+	});
+
     // AJAX Function for saving details
 	jQuery('body').on('change blur','.ss-form-input', function() {
 
@@ -58,6 +69,9 @@ jQuery(document).ready(function($) {
 		var spotlight_access = (jQuery('#spotlight-access').is(":checked"))?1:0;
 		var ss_api_key = jQuery('#ss_api_key').val();
 
+		var ss_rss_feed_link = jQuery("#ss-rss-feed-link").val();
+		var ss_background_image = jQuery("#ss-backgroud-image").val();
+
 		jQuery.ajax({
 			type: 'POST',
 			url: ss_toolkit_ajax_url.ajaxurl, // Replace with your AJAX handler URL
@@ -69,6 +83,8 @@ jQuery(document).ready(function($) {
 				'sstoolkit_removal': sstoolkit_removal, 
 				'spotlight_access': spotlight_access, 
 				'ss_api_key' : ss_api_key,
+				'ss_rss_feed_link' :ss_rss_feed_link,
+				'ss_background_image' :ss_background_image,
 				'from_toolkit_form' : from_toolkit_form
 			},
 			success: function(response) {

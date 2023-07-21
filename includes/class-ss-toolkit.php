@@ -107,6 +107,9 @@ class Ss_Toolkit {
 
 			add_action( 'login_enqueue_scripts',array($this,'ss_custom_login_scripts') );
 			add_action( 'login_init', array($this,'custom_login_page_template'), 10,1);
+			// add_filter( 'lostpassword_url', array($this,'custom_lostpassword_form'), 10, 2);
+			// add_action( 'login_form_lostpassword', array($this,'custom_lostpassword_form') );
+			// login_form_lostpassword
 		}
 
 		//Hook to shortcodes function
@@ -307,7 +310,7 @@ class Ss_Toolkit {
 													<p>Enables the Spotlight Studios Login Screen</p>
 
 													<div class="ss-toolkit-card-bottom">
-														<a href="?page=ss-toolkit&tab=settings" class="page-title-action">Settings</a>
+														<a href="#" class="page-title-action popup" id="ss-login-setting-popup-btn">Settings</a>
 
 														<label class="toggle-switch">
 															<input type="checkbox" <?php echo (get_option('ss_login') == 1)?'checked ':""; ?> name="ss_login" id="ss_login" class="ss-form-input">
@@ -316,6 +319,29 @@ class Ss_Toolkit {
 													</div>
 												</div>
 											</div>
+											<div id="ss-login-setting-popup" class="ss-popup">
+												<div class="ss-popup-content">
+													<!-- Your content goes here -->
+													<div class="ss-pop-header">
+														<h3>SS Login Page Settings</h3>
+														<a id="ss-login-setting-close-btn" class="ss-close-btn">X</a>
+													</div>
+													<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2">
+														<span class="ss_toolkit_message"></span>
+														<div class="container">
+															<div class="row">
+																<div class="col-md-12 ss-toolkit-card2">
+																	<label for="ss-rss-feed-link"><b>RSS Feed Link : </b></label>
+																	<input type="text" name="ss-rss-feed-link" class="ss-form-input" id="ss-rss-feed-link" placeholder="Rss Feed Link" value="<?php echo (get_option('ss_rss_feed_link') != null)?get_option('ss_rss_feed_link'):""; ?>">
+																	<p></p>
+																	<label for="ss-rss-feed-link"><b>Background Image URL : </b></label>
+																	<input type="text" name="ss-backgroud-image" class="ss-form-input" id="ss-backgroud-image" placeholder="Background Image URL" value="<?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?>">
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											<div>
 										</td>
 
 										<td>
@@ -342,7 +368,7 @@ class Ss_Toolkit {
 													<p>Enables common, useful shortcuts</p>
 
 													<div class="ss-toolkit-card-bottom">
-														<a href="#" class="page-title-action popup" id="ss-popup-btn">View</a>
+														<a href="#" class="page-title-action popup" id="ss-shortcode-popup-btn">View</a>
 														<label class="toggle-switch">
 															<input type="checkbox" <?php echo (get_option('ss_shortcodes') == 1)?'checked':''; ?> name="ss_shortcode" id="ss_shortcode" class="ss-form-input">
 															<span class="slider"></span>
@@ -350,12 +376,12 @@ class Ss_Toolkit {
 													</div>
 												</div>
 											</div>
-											<div id="ss-popup" class="ss-popup">
-  												<div id="ss-popup-content">
+											<div id="ss-shortcode-popup" class="ss-popup">
+  												<div class="ss-popup-content">
 													<!-- Your content goes here -->
-													<div id="ss-pop-header">
+													<div class="ss-pop-header">
 														<h3>SS ToolKit ShortCode's</h3>
-														<a id="ss-close-btn">X</a>
+														<a id="ss-shortcode-close-btn" class="ss-close-btn">X</a>
 													</div>
 													<table class="widefat" border="1">
 														<thead>
@@ -510,6 +536,16 @@ class Ss_Toolkit {
 				update_option('ss_shortcodes',$_POST['ss_shortcode']);
 				$message = "Shortcode settings updated";
 			}
+
+			if(get_option('ss_rss_feed_link') != $_POST['ss_rss_feed_link']){
+				update_option('ss_rss_feed_link',$_POST['ss_rss_feed_link']);
+				$message = "Rss Feed URL updated";
+			}
+
+			if(get_option('ss_background_image') != $_POST['ss_background_image']){
+				update_option('ss_background_image',$_POST['ss_background_image']);
+				$message = "Login Custom background image updated";
+			}
 		}
 
 		if($_POST['from_toolkit_form'] == 'settings_form'){
@@ -528,6 +564,7 @@ class Ss_Toolkit {
 				$message = "Google Analytics API key updated";
 			}
 		}
+
 
 		$return = array(
 			'message' => __( $message, 'SSToolkit' ),
@@ -614,7 +651,13 @@ class Ss_Toolkit {
 	 */
 	function custom_login_page_template() {
 		// Load your custom login template file
-		require_once(dirname(__FILE__) . '/custom-login-page.php');
+		// if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword') {
+		// 	require_once(dirname(__FILE__) . '/custom-forgot-password-page.php');
+
+		// }else{
+			require_once(dirname(__FILE__) . '/custom-login-page.php');
+
+		// }
 	
 		// Check if the login form is submitted
 		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -896,4 +939,31 @@ class Ss_Toolkit {
 		}
 		add_shortcode('ss_sitemap', 'ss_sitemap');
 	}
+
+	// // Modify the forget password URL for the admin
+	// function ss_lostpassword_url($lostpassword_url, $redirect) {
+	// 	// Replace 'custom-forget-password' with your desired custom URL slug
+	// 	// $custom_forget_password_url = site_url('/custom-forget-password-page/', 'login');
+	// 	// return esc_url($custom_forget_password_url);
+	// 	require_once(dirname(__FILE__) . '/custom-forgot-password-page.php');
+	// }
+
+	// Customize the lost password form
+	function custom_lostpassword_form() {
+		// Load your custom login template file 
+		//require_once(dirname(__FILE__) . '/custom-forgot-password-page.php');
+		return wp_redirect( site_url( 'wp-login.php?action=lostpassword' ));?>
+		<!-- <form id="custom-login-form" method="post" action="<?php //echo esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')); ?>">
+                <p>
+                    <label for="user_login"><?php //_e('Username or Email'); ?></label>
+                    <input type="text" name="user_login" id="user_login" class="input" value="" size="20" autocapitalize="off" />
+                </p>
+                <?php //do_action('lostpassword_form'); ?>
+                <p class="submit">/
+                    <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary" value="<?php //esc_attr_e('Reset Password'); ?>" />
+                </p>
+            </form> -->
+		<?php
+	}
+	
 }		
