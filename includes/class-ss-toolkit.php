@@ -100,6 +100,7 @@ class Ss_Toolkit {
 		//Hook function to remove deactivation permission for plugins
 		if(get_option('ss_removal_prevent') == 1){
 			add_filter('plugin_action_links', array($this,'hide_plugin_deactivation'), 10, 4);
+			add_action( 'pre_current_active_plugins', array($this,'custom_plugin_deactivation'),10,2 );
 		}
 
 		//Hook function to custom login page
@@ -107,9 +108,15 @@ class Ss_Toolkit {
 
 			add_action( 'login_enqueue_scripts',array($this,'ss_custom_login_scripts') );
 			add_action( 'login_init', array($this,'custom_login_page_template'), 10,1);
-			// add_filter( 'lostpassword_url', array($this,'custom_lostpassword_form'), 10, 2);
-			// add_action( 'login_form_lostpassword', array($this,'custom_lostpassword_form') );
-			// login_form_lostpassword
+				
+			// add_filter( 'lostpassword_url', array($this,'my_lost_password_page'), 10, 2 );
+
+			// add_action('init',  array($this,'custom_forgot_password_endpoint'));
+			// add_action('template_redirect',  array($this,'custom_forgot_password_page_content'));
+			// add_filter('lostpassword_url',  array($this,'custom_forgot_password_url'), 10, 2);
+
+
+			add_action( 'login_head',  array($this,'custom_forgot_password_page'), 10, 2 );
 		}
 
 		//Hook to shortcodes function
@@ -618,13 +625,31 @@ class Ss_Toolkit {
 			'ss-toolkit/ss-toolkit.php',
 		);
 	
-		if (in_array($plugin_file, $plugins_to_hide)) {
+		if (array_key_exists( 'deactivate', $actions ) && in_array($plugin_file, $plugins_to_hide) ) {
+		
 			// Remove the 'Deactivate' action from the plugin's actions
 			unset($actions['deactivate']);
 		}
 	
 		return $actions;
 	}
+
+	function custom_plugin_deactivation( $actions,$plugins ) {
+		// Replace 'target-plugin-folder/target-plugin.php' with the main plugin file path of the plugin you want to protect.
+		$target_plugin_path = 'ss-toolkit/ss-toolkit.php';
+		
+		// Check if the protected plugin is about to be deactivated.
+		if (isset($_GET['action']) && $_GET['action'] === 'deactivate' && isset($_GET['plugin']) && $_GET['plugin'] === $target_plugin_path) {
+			// If the protected plugin is being deactivated, prevent it and display an error message.
+			echo '<div class="error"><p>Deactivation of this plugin is not allowed.</p></div>';
+			return $plugins;
+		}
+	
+		return $plugins;
+
+		// return $prevent_deactivation;
+	}
+
 
 	/**
 	 * Function to add custom login CSS and JS files 
@@ -651,16 +676,16 @@ class Ss_Toolkit {
 	 */
 	function custom_login_page_template() {
 		// Load your custom login template file
-		// if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword') {
-		// 	require_once(dirname(__FILE__) . '/custom-forgot-password-page.php');
+		if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword') {
+			require_once(dirname(__FILE__) . '/custom-forgot-password.php');
 
-		// }else{
+		}else{
 			require_once(dirname(__FILE__) . '/custom-login-page.php');
 
-		// }
+		}
 	
 		// Check if the login form is submitted
-		if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['action'] !== 'lostpassword') {
 			// Handle the form submission and authentication process
 			$credentials = array(
 				'user_login'    => $_POST['log'],
@@ -676,6 +701,26 @@ class Ss_Toolkit {
 				// Successful login, redirect the user
 				wp_redirect(admin_url());
 				exit;
+			}
+		}else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['action'] === 'lostpassword'){
+			if (isset($_POST['user_login']) && isset($_POST['wp_nonce']) && wp_verify_nonce($_POST['wp_nonce'], 'custom_forgot_password')) {
+				$user_login = sanitize_text_field($_POST['user_login']);
+				$user_data = get_user_by('login', $user_login);
+			
+				if (!$user_data) {
+					echo '<p class="error">User not found. Please enter a valid username or email.</p>';
+				} else {
+					$user_email = $user_data->user_email;
+					$reset_key = get_password_reset_key($user_data);
+			
+					if (is_wp_error($reset_key)) {
+						echo '<p class="error">Error generating the password reset link. Please try again later.</p>';
+					} else {
+						$reset_link = site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user_login));
+						echo '<p class="success">A password reset link has been sent to your email address. Please check your inbox, including the spam folder.</p>';
+						// Optionally, you can send the reset link via email as well using wp_mail()
+					}
+				}
 			}
 		} else {
 			// Remove the default login form
@@ -940,30 +985,19 @@ class Ss_Toolkit {
 		add_shortcode('ss_sitemap', 'ss_sitemap');
 	}
 
-	// // Modify the forget password URL for the admin
-	// function ss_lostpassword_url($lostpassword_url, $redirect) {
-	// 	// Replace 'custom-forget-password' with your desired custom URL slug
-	// 	// $custom_forget_password_url = site_url('/custom-forget-password-page/', 'login');
-	// 	// return esc_url($custom_forget_password_url);
-	// 	require_once(dirname(__FILE__) . '/custom-forgot-password-page.php');
-	// }
-
-	// Customize the lost password form
-	function custom_lostpassword_form() {
-		// Load your custom login template file 
-		//require_once(dirname(__FILE__) . '/custom-forgot-password-page.php');
-		return wp_redirect( site_url( 'wp-login.php?action=lostpassword' ));?>
-		<!-- <form id="custom-login-form" method="post" action="<?php //echo esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')); ?>">
-                <p>
-                    <label for="user_login"><?php //_e('Username or Email'); ?></label>
-                    <input type="text" name="user_login" id="user_login" class="input" value="" size="20" autocapitalize="off" />
-                </p>
-                <?php //do_action('lostpassword_form'); ?>
-                <p class="submit">/
-                    <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary" value="<?php //esc_attr_e('Reset Password'); ?>" />
-                </p>
-            </form> -->
-		<?php
+	// Modify the forget password URL for the admin
+    
+	function custom_forgot_password_page() {
+		// Check if it's the forgot password page.
+		if ( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'lostpassword' ) {
+			// Display your custom forgot password page here.
+			// For example, you can include a custom template file or echo your HTML directly.
+			// You can use the WordPress functions and CSS to style the page.
+			// Remember to provide the form for users to enter their email and initiate the password reset process.
+			// The form's action attribute should be set to "wp-login.php?action=lostpassword".
+			// Example: include( 'path/to/your/custom/template-file.php' );
+			include(dirname(__FILE__) . '/custom-forgot-password.php');
+		}
 	}
 	
 }		
