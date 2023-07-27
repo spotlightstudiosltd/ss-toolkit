@@ -35,8 +35,7 @@
                     <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary" value="<?php esc_attr_e('Log In'); ?>" />
                 </p>
             </form>
-            <a href="<?php echo wp_lostpassword_url(); ?>">Lost your password?</a>
-                <!-- <a href="<?php //echo wp_redirect( site_url( 'wp-login.php?action=lostpassword' ) );?>">Lost your Password</a> -->
+            <a href="<?php echo wp_lostpassword_url(); ?>" class="link-btn">Lost your password?</a>
         </div>
     </div>
 </div>

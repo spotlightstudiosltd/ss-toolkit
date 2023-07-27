@@ -1,4 +1,4 @@
-<form id="custom-login-form" method="post" action="<?php //echo esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')); ?>">
+<form id="custom-login-form" method="post" action="<?php echo esc_url(network_site_url('wp-login.php?action=lostpassword', 'login_post')); ?>">
                 <!-- Your custom form fields go here -->
                 <p>
                     <label for="user_login"><?php _e('Username or Email'); ?></label>

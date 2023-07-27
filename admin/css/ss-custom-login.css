@@ -201,3 +201,27 @@ body { font-family: 'Work Sans', sans-serif !important; background: transparent;
     .page-slider .uk-card-body h3 { font-size: 22px; }
     .page-form .submit input { padding: 0px 50px; }
 }
+
+
+.link-btn{
+    padding: 0% 22%;
+    text-align: center;
+    margin-top: auto;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+.error,.success-message{
+    position: absolute;
+    top: 63vh;
+    right: 59px;
+}
+
+.error{
+    color: red;
+}   
+
+.success-message{
+    color: green;
+}
