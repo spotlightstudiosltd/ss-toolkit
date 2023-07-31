@@ -322,22 +322,22 @@ class Ss_Toolkit {
 												</div>
 											</div>
 											<div id="ss-login-setting-popup" class="ss-popup">
-												<div class="ss-popup-content">
+												<div class="ss-popup-content"  style="overflow:hidden"> 
 													<!-- Your content goes here -->
 													<div class="ss-pop-header">
 														<h3>SS Login Page Settings</h3>
 														<a id="ss-login-setting-close-btn" class="ss-close-btn">X</a>
 													</div>
-													<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2">
+													<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2" style="border:none">
 														<span class="ss_toolkit_message"></span>
 														<div class="container">
 															<div class="row">
 																<div class="col-md-12 ss-toolkit-card2">
 																	<label for="ss-rss-feed-link"><b>RSS Feed Link : </b></label>
-																	<input type="text" name="ss-rss-feed-link" class="ss-form-input" id="ss-rss-feed-link" placeholder="Rss Feed Link" value="<?php echo (get_option('ss_rss_feed_link') != null)?get_option('ss_rss_feed_link'):""; ?>">
+																	<textarea type="text" name="ss-rss-feed-link" class="ss-form-input" id="ss-rss-feed-link" placeholder="Rss Feed Link"><?php echo (get_option('ss_rss_feed_link') != null)?get_option('ss_rss_feed_link'):""; ?></textarea>
 																	<p></p>
 																	<label for="ss-rss-feed-link"><b>Background Image URL : </b></label>
-																	<input type="text" name="ss-backgroud-image" class="ss-form-input" id="ss-backgroud-image" placeholder="Background Image URL" value="<?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?>">
+																	<textarea type="text" name="ss-backgroud-image" class="ss-form-input" id="ss-backgroud-image" placeholder="Background Image URL"><?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?></textarea>
 																</div>
 															</div>
 														</div>
@@ -540,8 +540,9 @@ class Ss_Toolkit {
 			}
 
 			if(get_option('ss_rss_feed_link') != $_POST['ss_rss_feed_link']){
+
 				update_option('ss_rss_feed_link',$_POST['ss_rss_feed_link']);
-				$message = "Rss Feed URL updated";
+				$message = "RSS Feed URL updated";
 			}
 
 			if(get_option('ss_background_image') != $_POST['ss_background_image']){
@@ -640,6 +641,7 @@ class Ss_Toolkit {
 		wp_enqueue_style( 'custom-login', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/ss-custom-login.css' );
 		wp_enqueue_style( 'custom-login-uikit', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/uikit.min.css' );
 
+		wp_enqueue_script( 'login-jquery' , 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' , array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'custom-login-js', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/ss-custom-login.js', array( 'jquery' ), $this->version, false );  
 		wp_enqueue_script( 'custom-login-uikitjs', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit.min.js', array( 'jquery' ), $this->version, false );  
 		wp_enqueue_script( 'custom-login-uikitminjs', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit-icons.min.js', array( 'jquery' ), $this->version, false );   
@@ -681,7 +683,15 @@ class Ss_Toolkit {
 			$user = wp_signon($credentials);
 			if (is_wp_error($user)) {
 				// Failed login, display an error message
-				echo '<p class="error">Invalid username or password.</p>';
+				// echo '<p class="error">Invalid username or password.</p>';?>
+				<script>
+					jQuery('#login-message').html('Invalid username or password.').css('display','block');
+					jQuery('#login-message').addClass("error");
+					setTimeout(function() {
+						jQuery('#login-message').css('display','none');
+					},  5000);
+				</script>
+				<?php
 			} else {
 				// Successful login, redirect the user
 				wp_redirect(admin_url());
@@ -692,17 +702,40 @@ class Ss_Toolkit {
 				$user_login = sanitize_text_field($_POST['user_login']);
 				$user_data = get_user_by('login', $user_login);
 
-				if (!$user_data) {
-					echo '<div class="error">User not found. Please enter a  <br/>valid username or email.</div>';
+				if (!$user_data) {?>
+					<script>
+						jQuery('#login-message').html('User not found. Please enter a  <br/>valid username or email.').css('display','block');
+						jQuery('#login-message').addClass("error");
+						setTimeout(function() {
+							jQuery('#login-message').css('display','none');
+						},  5000);
+					</script>
+					<?php
 				} else {
 					$user_email = $user_data->user_email;
 					$reset_key = get_password_reset_key($user_data);
 			
 					if (is_wp_error($reset_key)) {
-						echo '<div class="error">Error generating the password reset link.  <br/>Please try again later.</div>';
+						// echo '<div class="error">Error generating the password reset link.  <br/>Please try again later.</div>';?>
+						<script>
+							jQuery('#login-message').html('Error generating the password reset link.  <br/>Please try again later.').css('display','block');
+							jQuery('#login-message').addClass("error");
+							setTimeout(function() {
+								jQuery('#login-message').css('display','none');
+							},  5000);
+						</script>
+					<?php
 					} else {
 						$reset_link = site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user_login));
-						echo '<div class="success-message">A password reset link has been sent to <br/>your email address.</div>';
+						// echo '<div class="success-message">A password reset link has been sent to <br/>your email address.</div>';?>
+						<script>
+							jQuery('#login-message').html('A password reset link has been sent to <br/>your email address.').css('display','block');
+							jQuery('#login-message').addClass("success-message");
+							setTimeout(function() {
+								jQuery('#login-message').css('display','none');
+							},  5000);
+						</script>
+						<?php
 					}
 				}
 			}
@@ -975,11 +1008,6 @@ class Ss_Toolkit {
 		$current_user = wp_get_current_user();
 		$user_id = $current_user->user_login;
 		$user_email = $current_user->user_email;
-		//str_contains(strtolower($user_email), 'spotlight')	
-		// echo '<pre>';
-		// print_r($current_user); || 
-		// ((strtolower($current_user->user_login) == 'spotlight' || str_contains(strtolower($user_email), 'spotlight')) && get_option('ss_access_toolkit') == 0) ||
-		// (strtolower($current_user->user_login) == 'spotlight' || str_contains(strtolower($user_email), 'spotlight')) && get_option('ss_access_toolkit') == 1
 		if(((strtolower($current_user->user_login) != 'spotlight' || !str_contains(strtolower($user_email), 'spotlight')) && get_option('ss_access_toolkit') == 1)){
 			//remove deactivation option from bulk action
 			unset($actions['deactivate-selected']);

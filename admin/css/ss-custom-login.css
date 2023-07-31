@@ -213,9 +213,11 @@ body { font-family: 'Work Sans', sans-serif !important; background: transparent;
 }
 
 .error,.success-message{
-    position: absolute;
-    top: 68vh;
-    right: 14px;
+    text-align: center;
+    margin-top: 18px;
+    margin-bottom: 0px;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 .error{

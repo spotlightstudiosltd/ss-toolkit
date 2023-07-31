@@ -3,9 +3,10 @@
 * Template Name: Custom Login Page
 */
 ?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="login-page">
     <div class="uk-column-1-2 uk-column-1-1@s page-row">
-       <div class="uk-slider-container-offset page-slider" uk-slider style="background-image : url(<?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'): plugin_dir_url( dirname( __FILE__ ) ). 'admin/images/login-cover-banner.png'?>);">
+       <div class="uk-slider-container-offset page-slider uk-slider" uk-slider="autoplay: true; autoplay-interval: 2000" style="background-image : url(<?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'): plugin_dir_url( dirname( __FILE__ ) ). 'admin/images/login-cover-banner.png'?>);">
             <div class="uk-position-relative uk-visible-toggle uk-light inner-page-slider" tabindex="-1">
                 <ul class="uk-slider-items uk-child-width-1@s uk-grid">
                     <?php load_template(dirname(__FILE__) . '/custom-rss-feed.php');?>
@@ -19,6 +20,7 @@
             <div class="form-logo">
                 <img src="<?php echo plugin_dir_url( dirname( __FILE__ ) ). 'admin/images/logo.svg'?>" alt="">
             </div>
+            <p id="login-message"></p>
             <form id="custom-login-form" action="<?php echo esc_url(wp_login_url()); ?>" method="post">
                 <p>
                     <label for="user_login"></label>
@@ -35,7 +37,7 @@
                     <input type="submit" name="wp-submit" id="wp-submit" class="button button-primary" value="<?php esc_attr_e('Log In'); ?>" />
                 </p>
             </form>
-            <a href="<?php echo wp_lostpassword_url(); ?>" class="link-btn">Lost your password?</a>
+            <a href="<?php echo wp_lostpassword_url(); ?>" class="link-btn">I've forgotten my password</a>
         </div>
     </div>
 </div>

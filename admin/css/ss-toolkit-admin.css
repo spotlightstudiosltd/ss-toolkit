@@ -168,6 +168,6 @@ input:checked + .slider:before {
   font-size: 14px
 }
 
-.ss-popup input{
+.ss-popup input,.ss-popup textarea{
   width: 100%;
 }
