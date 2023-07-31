@@ -214,8 +214,8 @@ body { font-family: 'Work Sans', sans-serif !important; background: transparent;
 
 .error,.success-message{
     position: absolute;
-    top: 63vh;
-    right: 59px;
+    top: 68vh;
+    right: 14px;
 }
 
 .error{

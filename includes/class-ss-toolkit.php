@@ -97,9 +97,13 @@ class Ss_Toolkit {
 		//Hook function to add Google Analytics tag to Header
 		add_action('wp_head', array($this,'add_googleanalytics_header'));
 		
-		//Hook function to remove deactivation permission for plugins
+		//Hook functions to remove deactivation permission for plugins
 		if(get_option('ss_removal_prevent') == 1){
+
+			//Hook to remove plugin actions links
 			add_filter('plugin_action_links', array($this,'hide_plugin_deactivation'), 10, 4);
+			//Hook to remove Bulk actions links
+			add_filter('bulk_actions-plugins', array($this,'remove_bulk_actions_for_plugins'), 10, 4);
 		}
 
 		//Hook function to custom login page
@@ -650,14 +654,21 @@ class Ss_Toolkit {
 	 */
 	function custom_login_page_template() {
 		// Load your custom login template file
-		if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword') {
-			require_once(dirname(__FILE__) . '/custom-forgot-password.php');
+		if(isset($_REQUEST['action']) && $_REQUEST['action'] === 'rp'){?>
 
+			<style>
+				.login-page{
+					display : none;
+				}
+			</style>
+		<?php 
 		}else{
-			require_once(dirname(__FILE__) . '/custom-login-page.php');
-
+			if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword') {
+				require_once(dirname(__FILE__) . '/custom-forgot-password.php');
+			}else{
+				require_once(dirname(__FILE__) . '/custom-login-page.php');
+			}
 		}
-	
 		// Check if the login form is submitted
 		if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['action'] !== 'lostpassword') {
 			// Handle the form submission and authentication process
@@ -692,19 +703,6 @@ class Ss_Toolkit {
 					} else {
 						$reset_link = site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user_login));
 						echo '<div class="success-message">A password reset link has been sent to <br/>your email address.</div>';
-
-						$subject = 'Password Reset Link';
-						$message = "Hi $user_login,\r\n\r\n";
-						$message .= "You have requested a password reset for your account.\r\n";
-						$message .= "Please click the following link to reset your password:\r\n";
-						$message .= "$reset_link\r\n\r\n";
-						$message .= "If you did not request a password reset, please ignore this email.\r\n\r\n";
-						$message .= "Regards,\r\nYour Website Team";
-						
-						$headers = array('Content-Type: text/plain; charset=UTF-8');
-						
-						// Send the email
-						wp_mail($user_data->user_email, $subject, $message, $headers);
 					}
 				}
 			}
@@ -969,6 +967,24 @@ class Ss_Toolkit {
 			return $output;
 		}
 		add_shortcode('ss_sitemap', 'ss_sitemap');
+	}
+
+
+	function remove_bulk_actions_for_plugins($actions) {
+
+		$current_user = wp_get_current_user();
+		$user_id = $current_user->user_login;
+		$user_email = $current_user->user_email;
+		//str_contains(strtolower($user_email), 'spotlight')	
+		// echo '<pre>';
+		// print_r($current_user); || 
+		// ((strtolower($current_user->user_login) == 'spotlight' || str_contains(strtolower($user_email), 'spotlight')) && get_option('ss_access_toolkit') == 0) ||
+		// (strtolower($current_user->user_login) == 'spotlight' || str_contains(strtolower($user_email), 'spotlight')) && get_option('ss_access_toolkit') == 1
+		if(((strtolower($current_user->user_login) != 'spotlight' || !str_contains(strtolower($user_email), 'spotlight')) && get_option('ss_access_toolkit') == 1)){
+			//remove deactivation option from bulk action
+			unset($actions['deactivate-selected']);
+		}
+		return $actions;
 	}
 
 }		
