@@ -641,7 +641,7 @@ class Ss_Toolkit {
 		wp_enqueue_style( 'custom-login', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/ss-custom-login.css' );
 		wp_enqueue_style( 'custom-login-uikit', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/uikit.min.css' );
 
-		wp_enqueue_script( 'login-jquery' , 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' , array( 'jquery' ), $this->version, false );
+		// wp_enqueue_script( 'login-jquery' , 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js' , array( 'jquery' ), $this->version, false );
 		wp_enqueue_script( 'custom-login-js', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/ss-custom-login.js', array( 'jquery' ), $this->version, false );  
 		wp_enqueue_script( 'custom-login-uikitjs', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit.min.js', array( 'jquery' ), $this->version, false );  
 		wp_enqueue_script( 'custom-login-uikitminjs', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit-icons.min.js', array( 'jquery' ), $this->version, false );   
@@ -664,15 +664,15 @@ class Ss_Toolkit {
 				}
 			</style>
 		<?php 
-		}else{
-			if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword') {
-				require_once(dirname(__FILE__) . '/custom-forgot-password.php');
-			}else{
-				require_once(dirname(__FILE__) . '/custom-login-page.php');
-			}
+		}else if (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword') {
+			require_once(dirname(__FILE__) . '/custom-forgot-password.php');
+		}
+		else{
+			require_once(dirname(__FILE__) . '/custom-login-page.php');
 		}
 		// Check if the login form is submitted
-		if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['action'] !== 'lostpassword') {
+		if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_REQUEST['action']) ) {
+			// ob_start();
 			// Handle the form submission and authentication process
 			$credentials = array(
 				'user_login'    => $_POST['log'],
@@ -690,55 +690,47 @@ class Ss_Toolkit {
 					setTimeout(function() {
 						jQuery('#login-message').css('display','none');
 					},  5000);
-				</script>
-				<?php
+				</script><?php
 			} else {
 				// Successful login, redirect the user
 				wp_redirect(admin_url());
 				exit;
 			}
-		}else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_REQUEST['action'] === 'lostpassword'){
+			// ob_end_clean();
+		}else if ($_SERVER['REQUEST_METHOD'] === 'POST' && (isset($_REQUEST['action']) && $_REQUEST['action'] === 'lostpassword')){
+			// ob_start();
 			if (isset($_POST['user_login']) ) {
 				$user_login = sanitize_text_field($_POST['user_login']);
 				$user_data = get_user_by('login', $user_login);
 
-				if (!$user_data) {?>
+				if (!$user_data) {
+					echo '<div>User not found. Please enter a <br/>valid username or email.</div>';?>
 					<script>
 						jQuery('#login-message').html('User not found. Please enter a  <br/>valid username or email.').css('display','block');
 						jQuery('#login-message').addClass("error");
 						setTimeout(function() {
 							jQuery('#login-message').css('display','none');
 						},  5000);
-					</script>
-					<?php
+					</script><?php
 				} else {
 					$user_email = $user_data->user_email;
 					$reset_key = get_password_reset_key($user_data);
 			
 					if (is_wp_error($reset_key)) {
-						// echo '<div class="error">Error generating the password reset link.  <br/>Please try again later.</div>';?>
+						echo '<div>Error generating the password reset link.  <br/>Please try again later.</div>';?>
 						<script>
 							jQuery('#login-message').html('Error generating the password reset link.  <br/>Please try again later.').css('display','block');
 							jQuery('#login-message').addClass("error");
 							setTimeout(function() {
 								jQuery('#login-message').css('display','none');
 							},  5000);
-						</script>
-					<?php
+						</script><?php
 					} else {
 						$reset_link = site_url("wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode($user_login));
-						// echo '<div class="success-message">A password reset link has been sent to <br/>your email address.</div>';?>
-						<script>
-							jQuery('#login-message').html('A password reset link has been sent to <br/>your email address.').css('display','block');
-							jQuery('#login-message').addClass("success-message");
-							setTimeout(function() {
-								jQuery('#login-message').css('display','none');
-							},  5000);
-						</script>
-						<?php
 					}
 				}
 			}
+			// ob_end_clean();
 		} else {
 			// Remove the default login form
 			add_filter('login_form', '__return_empty_string');

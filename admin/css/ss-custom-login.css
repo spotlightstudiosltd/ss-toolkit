@@ -17,7 +17,7 @@ body { font-family: 'Work Sans', sans-serif !important; background: transparent;
     font-weight: 500; 
     font-size: 36px;
     line-height: 42px; 
-    margin-bottom: -18px;
+    margin-bottom: 10px;
 }
 .page-slider .uk-card-body p {     
     font-size: 16px;
@@ -226,4 +226,16 @@ body { font-family: 'Work Sans', sans-serif !important; background: transparent;
 
 .success-message{
     color: green;
+}
+
+.errors{
+    position: absolute;
+    top: 59%;
+    right: 10%;
+    text-align: center;
+    margin-top: 23px;
+    margin-bottom: 0;
+    font-size: 13px;
+    font-weight: 700;
+    color: red;
 }

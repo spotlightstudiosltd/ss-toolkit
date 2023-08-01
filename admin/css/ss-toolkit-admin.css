@@ -153,6 +153,7 @@ input:checked + .slider:before {
 
 .ss-close-btn{
   font-size: 16px;
+  cursor: pointer;
 }
 
 .ss_toolkit_message{
