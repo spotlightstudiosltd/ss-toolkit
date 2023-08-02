@@ -7,7 +7,7 @@
  * public-facing side of the site and the admin area.
  *
  * @link       https://spotlightstudios.co.uk/
- * @since      1.0.0
+ * @since      2.0.0
  *
  * @package    Ss_Toolkit
  * @subpackage Ss_Toolkit/includes
@@ -22,7 +22,7 @@
  * Also maintains the unique identifier of this plugin as well as the current
  * version of the plugin.
  *
- * @since      1.0.0
+ * @since      2.0.0
  * @package    Ss_Toolkit
  * @subpackage Ss_Toolkit/includes
  * @author     Spotlight <admin@soptlight.com>
@@ -33,7 +33,7 @@ class Ss_Toolkit {
 	 * The loader that's responsible for maintaining and registering all hooks that power
 	 * the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   protected
 	 * @var      Ss_Toolkit_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
@@ -42,7 +42,7 @@ class Ss_Toolkit {
 	/**
 	 * The unique identifier of this plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   protected
 	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
@@ -51,7 +51,7 @@ class Ss_Toolkit {
 	/**
 	 * The current version of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   protected
 	 * @var      string    $version    The current version of the plugin.
 	 */
@@ -64,13 +64,13 @@ class Ss_Toolkit {
 	 * Load the dependencies, define the locale, and set the hooks for the admin area and
 	 * the public-facing side of the site.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 */
 	public function __construct() {
 		if ( defined( 'SS_TOOLKIT_VERSION' ) ) {
 			$this->version = SS_TOOLKIT_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '2.0.0';
 		}
 		$this->plugin_name = 'ss-toolkit';
 
@@ -108,16 +108,20 @@ class Ss_Toolkit {
 
 		//Hook function to custom login page
 		if(get_option('ss_login') == 1){
-
 			add_action( 'login_enqueue_scripts',array($this,'ss_custom_login_scripts') );
 			add_action( 'login_init', array($this,'custom_login_page_template'), 10,1);
-			
 		}
 
 		//Hook to shortcodes function
 		if(get_option('ss_shortcodes') == 1){
 			add_action('init', array($this,'ss_plugin_shortcodes'));
 		}
+
+		// add_action( 'admin_bar_menu', array($this,'custom_admin_bar_text'), 999 );
+		// 
+
+		// Hook the function to a WordPress action (e.g., 'init', 'wp_loaded')
+		add_action('init', array($this,'check_robots_txt'));
 	}
 
 	/**
@@ -133,7 +137,7 @@ class Ss_Toolkit {
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   private
 	 */
 	private function load_dependencies() {
@@ -171,7 +175,7 @@ class Ss_Toolkit {
 	 * Uses the Ss_Toolkit_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   private
 	 */
 	private function set_locale() {
@@ -186,7 +190,7 @@ class Ss_Toolkit {
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
@@ -207,7 +211,7 @@ class Ss_Toolkit {
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   private
 	 */
 	private function define_public_hooks() {
@@ -222,7 +226,7 @@ class Ss_Toolkit {
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
 	 *
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 */
 	public function run() {
 		$this->loader->run();
@@ -232,7 +236,7 @@ class Ss_Toolkit {
 	 * The name of the plugin used to uniquely identify it within the context of
 	 * WordPress and to define internationalization functionality.
 	 *
-	 * @since     1.0.0
+	 * @since     2.0.0
 	 * @return    string    The name of the plugin.
 	 */
 	public function get_plugin_name() {
@@ -242,7 +246,7 @@ class Ss_Toolkit {
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
-	 * @since     1.0.0
+	 * @since     2.0.0
 	 * @return    Ss_Toolkit_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
@@ -252,7 +256,7 @@ class Ss_Toolkit {
 	/**
 	 * Retrieve the version number of the plugin.
 	 *
-	 * @since     1.0.0
+	 * @since     2.0.0
 	 * @return    string    The version number of the plugin.
 	 */
 	public function get_version() {
@@ -278,7 +282,7 @@ class Ss_Toolkit {
 	/**
 	 * Function to Plugin Admin page
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function ss_toolkit_admin_page() {
@@ -333,13 +337,21 @@ class Ss_Toolkit {
 														<div class="container">
 															<div class="row">
 																<div class="col-md-12 ss-toolkit-card2">
-																	<label for="ss-rss-feed-link"><b>RSS Feed Link : </b></label>
-																	<textarea type="text" name="ss-rss-feed-link" class="ss-form-input" id="ss-rss-feed-link" placeholder="Rss Feed Link"><?php echo (get_option('ss_rss_feed_link') != null)?get_option('ss_rss_feed_link'):""; ?></textarea>
+																	<div><b>RSS Feed Link : </b></div>
+																		<div class="checkboxes">
+																			<p></p>
+																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link') == 1)?'checked ':""; ?> name="ss_rss_feed_link" id="ss_rss_feed_link" class="ss-form-input"> <label>News Feed</label> 
+																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link_promotion') == 1)?'checked ':""; ?> name="ss_rss_feed_link_promotion" id="ss_rss_feed_link_promotion" class="ss-form-input"> <label>Promotion Feed</label>
+																		</div>
 																	<p></p>
 																	<label for="ss-rss-feed-link"><b>Background Image URL : </b></label>
+																	<p></p>
 																	<textarea type="text" name="ss-backgroud-image" class="ss-form-input" id="ss-backgroud-image" placeholder="Background Image URL"><?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?></textarea>
 																</div>
 															</div>
+														</div>
+														<div class="save-btn-div">
+															<a href="#" class="ss-save-btn page-title-action popup" id="save-btn">Save</a>
 														</div>
 													</div>
 												</div>
@@ -480,7 +492,7 @@ class Ss_Toolkit {
 	 * Function to add Wordpress Dashboard Widget
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function ss_toolkit_add_dashboard_widgets() {
@@ -496,7 +508,7 @@ class Ss_Toolkit {
 	 * Function to create Wordpress Dashboard Widget
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function ss_toolkit_dashboard_widget() {
@@ -516,7 +528,7 @@ class Ss_Toolkit {
 	 * Function to AJAX request
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function ss_toolkit_ajax_request() { 
@@ -542,6 +554,12 @@ class Ss_Toolkit {
 			if(get_option('ss_rss_feed_link') != $_POST['ss_rss_feed_link']){
 
 				update_option('ss_rss_feed_link',$_POST['ss_rss_feed_link']);
+				$message = "RSS Feed URL updated";
+			}
+
+			if(get_option('ss_rss_feed_link_promotion') != $_POST['ss_rss_feed_link_promotion']){
+
+				update_option('ss_rss_feed_link_promotion',$_POST['ss_rss_feed_link_promotion']);
 				$message = "RSS Feed URL updated";
 			}
 
@@ -581,7 +599,7 @@ class Ss_Toolkit {
 	 * Function to add Google Analytics tag
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function add_googleanalytics_header(){ 
@@ -612,7 +630,7 @@ class Ss_Toolkit {
 	 * Function to remove plugin deactivation permission
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function hide_plugin_deactivation($actions, $plugin_file, $plugin_data, $context) {
@@ -634,7 +652,7 @@ class Ss_Toolkit {
 	 * Function to add custom login CSS and JS files 
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function ss_custom_login_scripts() {
@@ -651,7 +669,7 @@ class Ss_Toolkit {
 	 * Function to redirect custom login page template
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function custom_login_page_template() {
@@ -742,7 +760,7 @@ class Ss_Toolkit {
 	 * Function to add shortcodes related to plugin
 	 * 
 	 * 
-	 * @since    1.0.0
+	 * @since    2.0.0
 	 * @access   public
 	 */
 	function ss_plugin_shortcodes() {
@@ -753,7 +771,7 @@ class Ss_Toolkit {
 		 * @Params
 		 * color,icon,number
 		 * 
-		 * @since    1.0.0
+		 * @since    2.0.0
 		 * @access   public
 		 */
 		function ss_5star($atts) {
@@ -784,7 +802,7 @@ class Ss_Toolkit {
 		 * company,name,link,prefix,developer,developer_link,line_end
 		 * 
 		 * 
-		 * @since    1.0.0
+		 * @since    2.0.0
 	 	 * @access   public
 		 */
 		function ss_footer($atts) {
@@ -827,7 +845,7 @@ class Ss_Toolkit {
 		 * @Params
 		 * no params
 		 * 
-		 * @since    1.0.0
+		 * @since    2.0.0
 	     * @access   public
 		 */
 		function ss_logout() {
@@ -868,7 +886,7 @@ class Ss_Toolkit {
 		 * @Params
 		 * width,height
 		 * 
-		 * @since    1.0.0
+		 * @since    2.0.0
 	 	 * @access   public
 		 * 
 		 */
@@ -892,7 +910,7 @@ class Ss_Toolkit {
 		 * class,percent,display
 		 * 
 		 * 
-		 * @since    1.0.0
+		 * @since    2.0.0
 	     * @access   public
 		 */
 		function ss_progressbar($atts) {
@@ -916,7 +934,7 @@ class Ss_Toolkit {
 		 * @Params
 		 * p(paragraph),l(lines)
 		 * 
-		 * @since    1.0.0
+		 * @since    2.0.0
 	 	 * @access   public
 		 */
 		function ss_lorum($atts) {
@@ -961,7 +979,7 @@ class Ss_Toolkit {
 		 * @Params
 		 * list_class,box_class
 		 * 
-		 * @since    1.0.0
+		 * @since    2.0.0
 	     * @access   public
 		 */
 		function ss_sitemap($atts) {
@@ -1007,4 +1025,40 @@ class Ss_Toolkit {
 		return $actions;
 	}
 
+
+	function custom_admin_bar_text( $wp_admin_bar ) {
+		$args = array(
+			'id'    => 'custom-text',
+			'title' => 'Robots Blocked',
+			'meta'  => array( 'class' => 'custom-text-class' ),
+			'parent'=> 'top-secondary',
+		);
+		$wp_admin_bar->add_node( $args );
+	}
+
+	function custom_admin_bar_css() {
+		echo '<style>
+			#wpadminbar .quicklinks .ab-top-secondary>li.custom-text-class{
+				background-color:red !important;
+			}
+		</style>';
+	}
+
+	function check_robots_txt() {
+		// Set the URL of the robots.txt file
+		$robots_url = home_url('/robots.txt');  // Assuming your WordPress is installed in the root directory
+	
+		// Send an HTTP request to the robots.txt file
+		$response = wp_safe_remote_get($robots_url);
+	
+		// Get the HTTP response code
+		$response_code = wp_remote_retrieve_response_code($response);
+	
+		// Check if the robots.txt file is accessible
+		if ($response_code !== 200) {
+			// echo 'robots.txt is not accessible and blocked.';
+			add_action( 'admin_bar_menu', array($this,'custom_admin_bar_text'), 999 );
+			add_action('wp_before_admin_bar_render', array($this,'custom_admin_bar_css'));
+		}
+	}
 }		

@@ -9,14 +9,14 @@
  * that starts the plugin.
  *
  * @link              https://spotlightstudios.co.uk/
- * @since             1.0.0
+ * @since             2.0.0
  * @package           Ss_Toolkit
  *
  * @wordpress-plugin
  * Plugin Name:       SS Toolkit
  * Plugin URI:        https://spotlightstudios.co.uk/
  * Description:       This plugin has a few tools, primarily to advertise our service, provide Spotlight Branding throughout the client experience, and provide some useful tools that we integrate into most of our websites.
- * Version:           1.0.0
+ * Version:           2.0.0
  * Author:            Spotlight
  * Author URI:        https://spotlightstudios.co.uk/
  * License:           GPL-2.0+
@@ -32,10 +32,10 @@ if ( ! defined( 'WPINC' ) ) {
 
 /**
  * Currently plugin version.
- * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Start at version 2.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'SS_TOOLKIT_VERSION', '1.0.0' );
+define( 'SS_TOOLKIT_VERSION', '2.0.0' );
 
 /**
  * The code that runs during plugin activation.
@@ -71,7 +71,7 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-ss-toolkit.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since    1.0.0
+ * @since    2.0.0
  */
 function run_ss_toolkit() {
 

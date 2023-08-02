@@ -6,7 +6,7 @@
  * This file is used to markup the public-facing aspects of the plugin.
  *
  * @link       https://spotlightstudios.co.uk/
- * @since      1.0.0
+ * @since      2.0.0
  *
  * @package    Ss_Toolkit
  * @subpackage Ss_Toolkit/public/partials
