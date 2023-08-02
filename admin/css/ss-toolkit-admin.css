@@ -189,8 +189,3 @@ input:checked + .slider:before {
   display: flex;
   flex-direction: row-reverse;
 }
-
-/* Target the admin bar */
-#wp-admin-bar-top-secondary>ul>li.custom-text-class {
-  background-color:red;
-}

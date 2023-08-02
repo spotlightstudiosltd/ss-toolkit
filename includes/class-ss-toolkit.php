@@ -117,10 +117,7 @@ class Ss_Toolkit {
 			add_action('init', array($this,'ss_plugin_shortcodes'));
 		}
 
-		// add_action( 'admin_bar_menu', array($this,'custom_admin_bar_text'), 999 );
-		// 
-
-		// Hook the function to a WordPress action (e.g., 'init', 'wp_loaded')
+		// Hook to check Robots.txt file is present in the site
 		add_action('init', array($this,'check_robots_txt'));
 	}
 
@@ -1012,7 +1009,13 @@ class Ss_Toolkit {
 		add_shortcode('ss_sitemap', 'ss_sitemap');
 	}
 
-
+	/**
+	 * Function to remove deactivation option from bulk action
+	 * 
+	 * 
+	 * @since    2.0.0
+	 * @access   public
+	 */
 	function remove_bulk_actions_for_plugins($actions) {
 
 		$current_user = wp_get_current_user();
@@ -1025,7 +1028,13 @@ class Ss_Toolkit {
 		return $actions;
 	}
 
-
+	/**
+	 * Function to add Robots Blocked Custom text in Admin Bar
+	 * 
+	 * 
+	 * @since    2.0.0
+	 * @access   public
+	 */
 	function custom_admin_bar_text( $wp_admin_bar ) {
 		$args = array(
 			'id'    => 'custom-text',
@@ -1036,6 +1045,13 @@ class Ss_Toolkit {
 		$wp_admin_bar->add_node( $args );
 	}
 
+	/**
+	 * Function to add CSS for Robots Blocked Custom text 
+	 * 
+	 * 
+	 * @since    2.0.0
+	 * @access   public
+	 */
 	function custom_admin_bar_css() {
 		echo '<style>
 			#wpadminbar .quicklinks .ab-top-secondary>li.custom-text-class{
@@ -1044,6 +1060,13 @@ class Ss_Toolkit {
 		</style>';
 	}
 
+	/**
+	 * Function to check Robots.txt file is present in the site
+	 * 
+	 * 
+	 * @since    2.0.0
+	 * @access   public
+	 */
 	function check_robots_txt() {
 		// Set the URL of the robots.txt file
 		$robots_url = home_url('/robots.txt');  // Assuming your WordPress is installed in the root directory
