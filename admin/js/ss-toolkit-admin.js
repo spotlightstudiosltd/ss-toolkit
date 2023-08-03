@@ -56,7 +56,15 @@ jQuery(document).ready(function($) {
 
     // AJAX Function for saving details
 	jQuery('body').on('change blur','.ss-form-input', function() {
+		ss_toolkit_ajax_call();
+	});
 
+	jQuery('body').on('click','.ss-save-btn', function() {
+
+		ss_toolkit_ajax_call();
+	});
+
+	function ss_toolkit_ajax_call(){
 		jQuery('.ss_toolkit_message').text('Please wait...').css('display','block');
 
 		var from_toolkit_form = jQuery("#from_toolkit_form").val();
@@ -92,64 +100,16 @@ jQuery(document).ready(function($) {
 			success: function(response) {
 				jQuery('.ss_toolkit_message').text(response.data.message).css('display','block');
 				setTimeout(function() {
-                    jQuery('.ss_toolkit_message').css('display','none');
-                }, 4000);
+					jQuery('.ss_toolkit_message').css('display','none');
+				}, 4000);
 			},
 			error: function(xhr, textStatus, errorThrown) {
 				jQuery('.ss_toolkit_message').text("Something went worng").css('display','block');
 				setTimeout(function() {
-                    jQuery('.ss_toolkit_message').css('display','none');
-                }, 4000);
+					jQuery('.ss_toolkit_message').css('display','none');
+				}, 4000);
 			}
 		});
-	});
+	}
 
-	jQuery('body').on('click','.ss-save-btn', function() {
-
-		// jQuery('.ss_toolkit_message').text('Please wait...').css('display','block');
-
-		// var from_toolkit_form = jQuery("#from_toolkit_form").val();
-
-		// var ss_login = (jQuery('#ss_login').is(":checked"))?1:0;
-		// var ss_dashboardwidget = (jQuery('#ss_dashboardwidget').is(":checked"))?1:0;
-		// var ss_shortcode = (jQuery('#ss_shortcode').is(":checked"))?1:0;
-
-		// var sstoolkit_removal = (jQuery('#sstoolkit-removal').is(":checked"))?1:0;
-		// var spotlight_access = (jQuery('#spotlight-access').is(":checked"))?1:0;
-		// var ss_api_key = jQuery('#ss_api_key').val();
-
-		var ss_rss_feed_link = (jQuery('#ss_rss_feed_link').is(":checked"))?1:0;
-		var ss_rss_feed_link_promotion = (jQuery('#ss_rss_feed_link_promotion').is(":checked"))?1:0;
-		var ss_background_image = jQuery("#ss-backgroud-image").val();
-
-		jQuery.ajax({
-			type: 'POST',
-			url: ss_toolkit_ajax_url.ajaxurl, // Replace with your AJAX handler URL
-			data:{
-				'action' : 'ss_toolkit_ajax_request',
-				// 'ss_login': ss_login, 
-				// 'ss_dashboardwidget': ss_dashboardwidget, 
-				// 'ss_shortcode': ss_shortcode, 
-				// 'sstoolkit_removal': sstoolkit_removal, 
-				// 'spotlight_access': spotlight_access, 
-				// 'ss_api_key' : ss_api_key,
-				'ss_rss_feed_link' :ss_rss_feed_link,
-				'ss_rss_feed_link_promotion' :ss_rss_feed_link_promotion,
-				'ss_background_image' :ss_background_image,
-				'from_toolkit_form' : from_toolkit_form
-			},
-			success: function(response) {
-				jQuery('.ss_toolkit_message').text(response.data.message).css('display','block');
-				setTimeout(function() {
-                    jQuery('.ss_toolkit_message').css('display','none');
-                }, 4000);
-			},
-			error: function(xhr, textStatus, errorThrown) {
-				jQuery('.ss_toolkit_message').text("Something went worng").css('display','block');
-				setTimeout(function() {
-                    jQuery('.ss_toolkit_message').css('display','none');
-                }, 4000);
-			}
-		});
-	});
 });

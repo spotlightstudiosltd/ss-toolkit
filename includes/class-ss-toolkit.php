@@ -333,7 +333,7 @@ class Ss_Toolkit {
 														<div class="container">
 															<div class="row">
 																<div class="col-md-12 ss-toolkit-card2">
-																	<div><b>RSS Feed Link : </b></div>
+																	<div><b>RSS Feeds : </b></div>
 																		<div class="checkboxes">
 																			<p></p>
 																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link') == 1)?'checked ':""; ?> name="ss_rss_feed_link" id="ss_rss_feed_link" > <label>Featured news</label> 
