@@ -84,6 +84,8 @@ class Ss_Toolkit {
 		// Hook the function to the admin_menu action to add the submenu page
 		add_action('admin_menu', array($this,'ss_toolkit_add_submenu_page'));
 
+		// Hook to check Robots.txt file is present in the site
+		add_action('admin_init', array($this,'check_robots_txt'),999);
 
 		//Hook function to Show the Spotlight Dashboard Widget
 		if(get_option('ss_dashboard_widget') == 1){
@@ -116,9 +118,6 @@ class Ss_Toolkit {
 		if(get_option('ss_shortcodes') == 1){
 			add_action('init', array($this,'ss_plugin_shortcodes'));
 		}
-
-		// Hook to check Robots.txt file is present in the site
-		add_action('init', array($this,'check_robots_txt'));
 	}
 
 	/**
@@ -347,9 +346,9 @@ class Ss_Toolkit {
 																</div>
 															</div>
 														</div>
-														<div class="save-btn-div">
+														<!-- <div class="save-btn-div">
 															<a href="#" class="ss-save-btn page-title-action popup" id="save-btn">Save</a>
-														</div>
+														</div> -->
 													</div>
 												</div>
 											<div>
@@ -551,13 +550,13 @@ class Ss_Toolkit {
 			if(get_option('ss_rss_feed_link') != $_POST['ss_rss_feed_link']){
 
 				update_option('ss_rss_feed_link',$_POST['ss_rss_feed_link']);
-				$message = "RSS Feed URL updated";
+				$message = "RSS News Feed option updated";
 			}
 
 			if(get_option('ss_rss_feed_link_promotion') != $_POST['ss_rss_feed_link_promotion']){
 
 				update_option('ss_rss_feed_link_promotion',$_POST['ss_rss_feed_link_promotion']);
-				$message = "RSS Feed URL updated";
+				$message = "RSS Promotion Feed option updated";
 			}
 
 			if(get_option('ss_background_image') != $_POST['ss_background_image']){
