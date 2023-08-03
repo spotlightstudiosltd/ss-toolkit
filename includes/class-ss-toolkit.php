@@ -336,19 +336,19 @@ class Ss_Toolkit {
 																	<div><b>RSS Feed Link : </b></div>
 																		<div class="checkboxes">
 																			<p></p>
-																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link') == 1)?'checked ':""; ?> name="ss_rss_feed_link" id="ss_rss_feed_link" class="ss-form-input"> <label>News Feed</label> 
-																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link_promotion') == 1)?'checked ':""; ?> name="ss_rss_feed_link_promotion" id="ss_rss_feed_link_promotion" class="ss-form-input"> <label>Promotion Feed</label>
+																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link') == 1)?'checked ':""; ?> name="ss_rss_feed_link" id="ss_rss_feed_link" > <label>Featured news</label> 
+																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link_promotion') == 1)?'checked ':""; ?> name="ss_rss_feed_link_promotion" id="ss_rss_feed_link_promotion"> <label>Promotions</label>
 																		</div>
 																	<p></p>
 																	<label for="ss-rss-feed-link"><b>Background Image URL : </b></label>
 																	<p></p>
-																	<textarea type="text" name="ss-backgroud-image" class="ss-form-input" id="ss-backgroud-image" placeholder="Background Image URL"><?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?></textarea>
+																	<textarea type="text" name="ss-backgroud-image" id="ss-backgroud-image" placeholder="Background Image URL"><?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?></textarea>
 																</div>
 															</div>
 														</div>
-														<!-- <div class="save-btn-div">
+														<div class="save-btn-div">
 															<a href="#" class="ss-save-btn page-title-action popup" id="save-btn">Save</a>
-														</div> -->
+														</div>
 													</div>
 												</div>
 											<div>
