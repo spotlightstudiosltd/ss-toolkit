@@ -74,11 +74,11 @@ class Ss_Toolkit {
 		}
 		$this->plugin_name = 'ss-toolkit';
 
+		$this->plugin_folder = basename( plugin_dir_path( dirname( __FILE__ )) ) .'/ss-toolkit.php';
+
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
-		$this->define_public_hooks();
-
 		add_action('admin_enqueue_scripts', array($this,'ss_toolkit_enqueueAdmin'));
 
 		// Hook the function to the admin_menu action to add the submenu page
@@ -155,12 +155,6 @@ class Ss_Toolkit {
 		 */
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-ss-toolkit-admin.php';
 
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-ss-toolkit-public.php';
-
 		$this->loader = new Ss_Toolkit_Loader();
 
 	}
@@ -202,22 +196,6 @@ class Ss_Toolkit {
 		wp_enqueue_script( $this->get_plugin_name(), plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/ss-toolkit-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script('ss-toolkit', 'ss_toolkit_ajax_url',array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ));
     }
-
-	/**
-	 * Register all of the hooks related to the public-facing functionality
-	 * of the plugin.
-	 *
-	 * @since    2.0.0
-	 * @access   private
-	 */
-	private function define_public_hooks() {
-
-		$plugin_public = new Ss_Toolkit_Public( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
-	}
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
@@ -632,7 +610,7 @@ class Ss_Toolkit {
 	function hide_plugin_deactivation($actions, $plugin_file, $plugin_data, $context) {
 		// Specify the plugin file(s) you want to hide the deactivation link for
 		$plugins_to_hide = array(
-			'ss-toolkit/ss-toolkit.php',
+			$this->plugin_folder,
 		);
 	
 		if (array_key_exists( 'deactivate', $actions ) && in_array($plugin_file, $plugins_to_hide) ) {
@@ -1081,6 +1059,27 @@ class Ss_Toolkit {
 			// echo 'robots.txt is not accessible and blocked.';
 			add_action( 'admin_bar_menu', array($this,'custom_admin_bar_text'), 999 );
 			add_action('wp_before_admin_bar_render', array($this,'custom_admin_bar_css'));
+		}
+	}
+
+	function enable_auto_update_for_custom_plugin($false, $action, $args) {
+		if ('plugin_information' === $action && isset($args->slug) && 'ss-toolkit' === $args->slug) {
+			return true;
+		}
+		return $false;
+	}
+
+	function force_plugin_update_check() {
+		if (is_admin()) {
+			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+			$plugins = get_plugins();
+			foreach ($plugins as $file => $plugin) {
+				if ($this->plugin_folder === $file) {
+					$plugin_slug = dirname($file);
+					wp_update_plugins();
+					break;
+				}
+			}
 		}
 	}
 }		

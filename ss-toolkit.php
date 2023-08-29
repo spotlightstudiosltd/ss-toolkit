@@ -16,7 +16,7 @@
  * Plugin Name:       SS Toolkit
  * Plugin URI:        https://spotlightstudios.co.uk/
  * Description:       This plugin has a few tools, primarily to advertise our service, provide Spotlight Branding throughout the client experience, and provide some useful tools that we integrate into most of our websites.
- * Version:           2.0.0
+ * Version:           2.0.2
  * Author:            Spotlight
  * Author URI:        https://spotlightstudios.co.uk/
  * License:           GPL-2.0+
@@ -35,7 +35,9 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 2.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'SS_TOOLKIT_VERSION', '2.0.0' );
+define( 'SS_TOOLKIT_VERSION', '2.0.2' );
+
+// add_filter( 'auto_update_plugin', '__return_true' );
 
 /**
  * The code that runs during plugin activation.
@@ -64,6 +66,10 @@ register_deactivation_hook( __FILE__, 'deactivate_ss_toolkit' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-ss-toolkit.php';
 
+require_once plugin_dir_path( __FILE__ ) . 'config.php';
+require plugin_dir_path( __FILE__ ) . 'update.php';
+$update = new ToolkitGitHubPluginUpdater(SLUG,GITHUBUSERNAME,GITHUBPROJECTREPO,ACCESSTOKEN);
+
 /**
  * Begins execution of the plugin.
  *
@@ -80,3 +86,6 @@ function run_ss_toolkit() {
 
 }
 run_ss_toolkit();
+
+
+
