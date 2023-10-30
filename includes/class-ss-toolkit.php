@@ -25,7 +25,7 @@
  * @since      2.0.0
  * @package    Ss_Toolkit
  * @subpackage Ss_Toolkit/includes
- * @author     Spotlight <admin@soptlight.com>
+ * @author     Spotlight <info@spotlightstudios.co.uk>
  */
 class Ss_Toolkit {
 
@@ -261,7 +261,7 @@ class Ss_Toolkit {
 	 */
 	function ss_toolkit_admin_page() {
 		// Page content goes here (you can put your HTML and PHP code for the custom tools)
-		echo '<h1>SS Toolskit 2.0</h1>';
+		echo '<h1>SS Toolkit 2.0</h1>';
 		$active_tab = isset( $_GET[ 'tab' ] ) ? $_GET[ 'tab' ] : 'tools';
 		$current_user = wp_get_current_user();
 		$user_id = $current_user->user_login;

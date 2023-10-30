@@ -45,3 +45,7 @@ This plugin has a few tools, primarily to advertise our service, provide Spotlig
   - Initial release
   - The previous version has undergone a transformation with the introduction of a new design.
   - Introducing Additional Enhancements in the Latest Iteration
+
+ = 2.0.1 =
+  
+  - Update test and text changes
