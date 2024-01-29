@@ -210,6 +210,9 @@ body { font-family: 'Work Sans', sans-serif !important; background: transparent;
     border: none;
     box-shadow: none;
     background: transparent;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
 }
 
 .error,.success-message{
@@ -239,3 +242,4 @@ body { font-family: 'Work Sans', sans-serif !important; background: transparent;
     font-weight: 700;
     color: red;
 }
+

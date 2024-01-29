@@ -85,7 +85,7 @@ input:checked + .slider:before {
   margin: 2px 0 6.8em !important;
 }
 
-.ss-toolkit-card-content a, .ss-save-btn {
+.ss-toolkit-card-content a, .ss-save-btn, .ss-btn {
   background-color: #140F4D;
   padding: 10px 25px;
   border-radius: 30px;
@@ -95,7 +95,7 @@ input:checked + .slider:before {
   cursor: pointer;
 }
 
-.ss-toolkit-card-content a:hover, .ss-save-btn a:hover{
+.ss-toolkit-card-content a:hover, .ss-save-btn a:hover, .ss-btn a:hover{
   background-color: #c3c4c7;
   color: #140F4D;
 }
@@ -188,4 +188,24 @@ input:checked + .slider:before {
 .save-btn-div{
   display: flex;
   flex-direction: row-reverse;
+}
+
+.textarea-group {
+  margin-bottom: 20px;
+}
+
+/* Style for the switch */
+.custom-function-switch {
+  position: relative;
+  display: inline-block;
+  width: 70px;
+  height: 25px;
+  margin-left: 15px;
+  margin-bottom: 5px;
+}
+
+.custom-function-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
 }

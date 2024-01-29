@@ -70,6 +70,9 @@ require_once plugin_dir_path( __FILE__ ) . 'config.php';
 require plugin_dir_path( __FILE__ ) . 'update.php';
 $update = new ToolkitGitHubPluginUpdater(SLUG,GITHUBUSERNAME,GITHUBPROJECTREPO,ACCESSTOKEN);
 
+
+
+// require plugin_dir_path( __FILE__ ) . 'includes/custom_functions.php';
 /**
  * Begins execution of the plugin.
  *
