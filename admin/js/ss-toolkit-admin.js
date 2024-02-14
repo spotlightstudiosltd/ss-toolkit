@@ -107,7 +107,7 @@ jQuery(document).ready(function($) {
 	function ss_toolkit_ajax_call(){
 		jQuery('.ss_toolkit_message').text('Please wait...').css('display','block');
 
-		var from_toolkit_form = jQuery("#from_toolkit_form").val();
+		var from_toolkit_form = jQuery(".uk-active #from_toolkit_form").val();
 
 		var ss_login = (jQuery('#ss_login').is(":checked"))?1:0;
 		var ss_dashboardwidget = (jQuery('#ss_dashboardwidget').is(":checked"))?1:0;
@@ -115,7 +115,9 @@ jQuery(document).ready(function($) {
 
 		var sstoolkit_removal = (jQuery('#sstoolkit-removal').is(":checked"))?1:0;
 		var spotlight_access = (jQuery('#spotlight-access').is(":checked"))?1:0;
+
 		var ss_api_key = jQuery('#ss_api_key').val();
+		var ss_google_map_api = jQuery("#ss_google_map_api").val();
 
 		var ss_rss_feed_link = (jQuery('#ss_rss_feed_link').is(":checked"))?1:0;
 		var ss_rss_feed_link_promotion = (jQuery('#ss_rss_feed_link_promotion').is(":checked"))?1:0;
@@ -170,7 +172,8 @@ jQuery(document).ready(function($) {
 				'ss_default_email_settings' : ss_default_email_settings,
 				'ss_default_mail' : ss_default_mail,
 				'ss_duplicate_post_page' : ss_duplicate_post_page,
-				'from_toolkit_form' : from_toolkit_form,
+				'ss_google_map_api' : ss_google_map_api,
+				'from_toolkit_form' : from_toolkit_form
 			},
 			success: function(response) {
 				jQuery('.ss_toolkit_message').text(response.data.message).css('display','block');
@@ -199,12 +202,16 @@ jQuery(document).ready(function($) {
 	function createNewTextareaGroup(textareaCount) {
         // textareaCount++;
 
-		var newTextarea = $('<div class="textarea-group">');
+		var newTextarea = $('<div class="textarea-group" id="textarea_'+ textareaCount +'_Wrapper">');
+		newTextarea.append('<div class="textarea-container">');
+		newTextarea.find('.textarea-container').append('<label class="uk-form-label" for="custom_function_' + textareaCount + '"><b>Custom Function #' + textareaCount + '</b></label>');
+		newTextarea.find('.textarea-container').append('<label class="uk-switch" for="custom-function-switch"><input type="checkbox" id="custom_function_switch_' + textareaCount + '" class="custom-function-switch" name="custom_function_switch[]" checked><span class="uk-switch-slider"></span></label>');
+		newTextarea.find('.textarea-container').append('<button type="button" class="remove-custom-function" data-id="'+ textareaCount +'">-</button>');
+		newTextarea.find('.textarea-container').append('<textarea class="uk-textarea" id="custom_function_' + textareaCount + '" name="custom_functions[]" data-id="'+ textareaCount +'" cols="30" rows="6" placeholder="' + getCustomText(textareaCount) + '"></textarea>');
+		newTextarea.append('</div>');
+		newTextarea.append('</div>');
 		newTextarea.append('<p></p>');
-		newTextarea.append('<label for="custom_function_' + textareaCount + '"><b>Custom Function #' + textareaCount + '</b></label>');
-		newTextarea.append('<label class="custom-function-switch"><input type="checkbox" id="custom_function_switch_' + textareaCount + '" class="custom-function-switch" name="custom_function_switch[]" checked><span class="slider"></span></label>');
-		newTextarea.append('<textarea id="custom_function_' + textareaCount + '" name="custom_functions[]" data-id="'+ textareaCount +'" cols="30" rows="6" placeholder="' + getCustomText(textareaCount) + '"></textarea>');
-		newTextarea.append('<p></p>');
+
 		textareaWrapper.append(newTextarea);
     }
 
@@ -216,7 +223,7 @@ jQuery(document).ready(function($) {
     addButton.click(function(event) {
         event.preventDefault();
 
-        var currentCount = textareaWrapper.find('.textarea-group textarea').length;
+        var currentCount = textareaWrapper.find('.textarea-group').length;
 		console.log(currentCount);
         if (currentCount < maxTextareaCount) {
             var newTextareaGroup = createNewTextareaGroup(currentCount + 1);
@@ -232,4 +239,9 @@ jQuery(document).ready(function($) {
 		var textarea = $(this).siblings('textarea');
 		textarea.prop('disabled', !this.checked);
 	});
+});
+
+$(document).on('click', '.remove-custom-function', function() {
+	var id = $(this).data('id');
+	$('#textarea_' + id + '_Wrapper').remove();
 });

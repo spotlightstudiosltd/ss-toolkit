@@ -307,392 +307,472 @@ class Ss_Toolkit {
 		if((strtolower($current_user->user_login) != 'spotlight' && get_option('ss_access_toolkit') == 0) || strtolower($current_user->user_login) == 'spotlight' && get_option('ss_access_toolkit') == 0 ||
 		    strtolower($current_user->user_login) == 'spotlight' && get_option('ss_access_toolkit') == 1){
 		?>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12">
-					<h2 class="nav-tab-wrapper">
-						<a href="?page=ss-toolkit&tab=tools" class="nav-tab <?php echo $active_tab == 'tools' ? 'nav-tab-active' : ''; ?>">Tools</a>
-						<a href="?page=ss-toolkit&tab=settings" class="nav-tab <?php echo $active_tab == 'settings' ? 'nav-tab-active' : ''; ?>">Settings</a>
-						<span class="ss_toolkit_message"></span>
-					</h2>
-					
-					<?php if($active_tab == 'tools'){?>
-						<form id="ss_toolkit_tools_form" action="">
-							<input type="hidden" name="from_toolkit_form"  id="from_toolkit_form" value="tools_form"> 
-							<div id="tab1 tools" style="display:block;overflow:scroll" class="tab1">
-								<table class="widefat" border="0">
-									<tr>
-										<td>
-											<div class="ss-toolkit-card">
-												<div class="ss-toolkit-card-content">
-													<h3>SpotLight Login</h3>
-													<p>Enables the Spotlight Studios Login Screen</p>
-
-													<div class="ss-toolkit-card-bottom">
-														<a href="#" class="page-title-action popup" id="ss-login-setting-popup-btn">Settings</a>
-
-														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_login') == 1)?'checked ':""; ?> name="ss_login" id="ss_login" class="ss-form-input">
-															<span class="slider"></span>
-														</label>
-													</div>
-												</div>
-											</div>
-											<div id="ss-login-setting-popup" class="ss-popup">
-												<div class="ss-popup-content"  style="overflow:hidden"> 
-													<!-- Your content goes here -->
-													<div class="ss-pop-header">
-														<h3>SS Login Page Settings</h3>
-														<a id="ss-login-setting-close-btn" class="ss-close-btn">X</a>
-													</div>
-													<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2" style="border:none">
-														<span class="ss_toolkit_message"></span>
-														<div class="container">
-															<div class="row">
-																<div class="col-md-12 ss-toolkit-card2">
-																	<div><b>RSS Feeds : </b></div>
-																		<div class="checkboxes">
-																			<p></p>
-																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link') == 1)?'checked ':""; ?> name="ss_rss_feed_link" id="ss_rss_feed_link" > <label>Featured news</label> 
-																			<input type="checkbox" <?php echo (get_option('ss_rss_feed_link_promotion') == 1)?'checked ':""; ?> name="ss_rss_feed_link_promotion" id="ss_rss_feed_link_promotion"> <label>Promotions</label>
-																		</div>
-																	<p></p>
-																	<label for="ss-rss-feed-link"><b>Background Image URL : </b></label>
-																	<p></p>
-																	<textarea type="text" name="ss-backgroud-image" id="ss-backgroud-image" placeholder="Background Image URL"><?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?></textarea>
+		<section class="tools-setting">
+			<div class="uk-section-default uk-section">
+				<div class="uk-container">
+					<div class="uk-grid tm-grid-expand uk-child-width-1-1 uk-grid-margin">
+						<div class="uk-width-1-1">
+							<div class="uk-margin">
+								<ul class="el-nav uk-margin uk-tab" uk-tab="connect: #js-0; itemNav: #js-1; animation: uk-animation-fade;" role="tablist">
+									<li class="<?php echo $active_tab == 'tools' ? 'uk-active' : ''; ?>" role="presentation">
+										<a href="?page=ss-toolkit&tab=tools" aria-selected="true" role="tab" id="uk-tab-1" aria-controls="uk-tab-2">Tools</a>
+									</li>
+									<li class="<?php echo $active_tab == 'settings' ? 'uk-active' : ''; ?>" role="presentation">
+										<a href="?page=ss-toolkit&tab=settings" aria-selected="false" role="tab" id="uk-tab-3" aria-controls="uk-tab-4" tabindex="-1">Settings</a>
+									</li>
+								</ul>
+								<span class="ss_toolkit_message"></span>
+								<ul id="js-0" class="uk-switcher" uk-height-match="row: false" role="presentation" style="touch-action: pan-y pinch-zoom;">
+									<li class="el-item uk-margin-remove-first-child uk-active" id="uk-tab-2" role="tabpanel" aria-labelledby="uk-tab-1" style="min-height: 623.4px;">
+										<h3 class="el-title uk-margin-top uk-margin-remove-bottom">Tools</h3>
+										<input type="hidden" name="from_toolkit_form" id="from_toolkit_form" value="tools_form">
+										<!-- Row 1 -->
+										<div class="el-content uk-panel uk-margin-top">
+											<div class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-small uk-grid-match uk-grid" uk-grid="">
+												<div class="uk-first-column">
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">Spotlight Login</h3>
+														</div>
+														<div class="uk-card-body">
+															<p>Enables the Spotlight Studios Login Screen</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column">
+																	<p>
+																		<a class="uk-button uk-button-primary page-title-action popup" href="#login_modal" uk-toggle="" role="button" id="ss-login-setting-popup-btn">Settings</a>
+																	</p>
+																</div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_login">
+																		<input type="checkbox" name="ss_login" id="ss_login" class="ss-form-input" <?php echo (get_option('ss_login') == 1)?'checked ':""; ?>/>
+																		<div class="uk-switch-slider"></div>
+																	</label>
 																</div>
 															</div>
 														</div>
-														<div class="save-btn-div">
-															<a href="#" class="ss-save-btn page-title-action popup" id="save-btn">Save</a>
+													</div>
+												</div>
+												<div>
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">Dashboard Widget</h3>
 														</div>
-													</div>
-												</div>
-											<div>
-										</td>
-
-										<td>
-											<div class="ss-toolkit-card">
-												<div class="ss-toolkit-card-content">
-													<h3>Dashboard Widget</h3>
-													<p>Dispalys a Spotlight studios widget with useful links and removes useless widgets</p>
-													
-													<div class="ss-toolkit-card-bottom">
-														<div></div>
-														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_dashboard_widget') == 1)?'checked':''; ?> name="ss_dashboardwidget" id="ss_dashboardwidget" class="ss-form-input">
-															<span class="slider"></span>
-														</label>
-													</div>
-												</div>
-											</div>
-										</td>
-
-										<td>
-											<div class="ss-toolkit-card">
-												<div class="ss-toolkit-card-content">
-													<h3>SS Shortcodes</h3>
-													<p>Enables common, useful shortcuts</p>
-
-													<div class="ss-toolkit-card-bottom">
-														<a href="#" class="page-title-action popup" id="ss-shortcode-popup-btn">View</a>
-														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_shortcodes') == 1)?'checked':''; ?> name="ss_shortcode" id="ss_shortcode" class="ss-form-input">
-															<span class="slider"></span>
-														</label>
-													</div>
-												</div>
-											</div>
-											<div id="ss-shortcode-popup" class="ss-popup">
-  												<div class="ss-popup-content">
-													<!-- Your content goes here -->
-													<div class="ss-pop-header">
-														<h3>SS ToolKit ShortCode's</h3>
-														<a id="ss-shortcode-close-btn" class="ss-close-btn">X</a>
-													</div>
-													<table class="widefat" border="1">
-														<thead>
-															<tr>
-																<th>Shortcode</th>   
-																<th>Description</th>  
-																<th>Variables</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr>
-																<td><p>[5_star]</p></td>
-																<td><p>Displays a number of stars out of 5</p></td>
-																<td><p>colour, icon, number</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss_footer]</p></td>
-																<td><p>Spotlight Footer Text</p></td>
-																<td><p>company(site title), prefix (default: Powered by), name(of designer), link, developer(if displayed), developer_link, line_end</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss_logout]</p></td>
-																<td><p>Logout button</p></td>
-																<td><p>No variable</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss_lorum]</p></td>
-																<td><p>Lorum ipsum generator</p></td>
-																<td><p>p (paragraph), l (lines)</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss_placeholder]</p></td>
-																<td>Places a placeholder image</td>
-																<td><p>width, height, bg(999), text_colour(555), text, ext</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss_placekitten]</p></td>
-																<td><p>Places a stock image of kittens </p></td>
-																<td><p>width, height</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss_progressbar]</p></td>
-																<td><p>Shows a progress bar</p></td>
-																<td><p>class(success), percent, display</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss_sitemap]</p></td>
-																<td><p>Creates a html site-map</p></td>
-																<td><p>list_class, box_class</p></td>
-															</tr>
-															<tr>
-																<td><p>[ss-icon]</p></td>
-																<td><p>Lord Icon Licence</p></td>
-																<td><p>id, width, trigger, delay, stroke, primary, secondary</p></td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="ss-toolkit-card">
-												<div class="ss-toolkit-card-content">
-													<h3>SpotLight Header/Footer</h3>
-													<p>Enables custom code for the header/footer for the website.</p>
-
-													<div class="ss-toolkit-card-bottom">
-														<a href="#" class="page-title-action popup" id="ss-custom-header-popup-btn">Content</a>
-
-														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_head_foot_content') == 1)?'checked ':""; ?> name="ss_head_foot_content" id="ss_head_foot_content" class="ss-form-input">
-															<span class="slider"></span>
-														</label>
-													</div>
-												</div>
-											</div>
-											<div id="ss-custom-header-popup" class="ss-popup">
-												<div class="ss-popup-content"  style="overflow:auto"> 
-													<!-- Your content goes here -->
-													<div class="ss-pop-header">
-														<h3>SS Header/Footer Contents</h3>
-														<a id="ss-custom-header-close-btn" class="ss-close-btn">X</a>
-													</div>
-													<div id="ss-toolkit-tab2 content-settings" class="ss-toolkit-tab2" style="border:none">
-														<span class="ss_toolkit_message"></span>
-														<div class="container">
-															<div class="row">
-																<div class="col-md-12 ss-toolkit-card2">
-																	<p></p>
-																	<label for="ss-rss-feed-link"><b>Header Content: </b></label>
-																	<p></p>
-																	<textarea rows="6" name="ss-header-content" id="ss-header-content" placeholder="Header Content"><?php echo (get_option('ss_header_content') != null)?get_option('ss_header_content'):""; ?></textarea>
-																	<p></p>
-																	<label for="ss-rss-feed-link"><b>Footer Content: </b></label>
-																	<p></p>
-																	<textarea rows="6" name="ss-footer-content" id="ss-footer-content" placeholder="Footer Content"><?php echo (get_option('ss_footer_content') != null)?get_option('ss_footer_content'):""; ?></textarea>
+														<div class="uk-card-body">
+															<p>Dispalys a Spotlight studios widget with useful links and removes useless widgets</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column"></div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_dashboardwidget">
+																		<input type="checkbox" <?php echo (get_option('ss_dashboard_widget') == 1)?'checked':''; ?> name="ss_dashboardwidget" id="ss_dashboardwidget" class="ss-form-input" />
+																		<div class="uk-switch-slider"></div>
+																	</label>
 																</div>
 															</div>
 														</div>
-														<div class="save-btn-div">
-															<a href="#" class="ss-content-save-btn ss-btn page-title-action popup" id="content-save-btn">Save</a>
+													</div>
+												</div>
+												<div>
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">SS Shortcodes</h3>
+														</div>
+														<div class="uk-card-body">
+															<p>Enables common, useful shortcuts</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column">
+																	<p>
+																		<a class="uk-button uk-button-primary page-title-action popup" href="#ss-shortcode-popup" uk-toggle="" role="button" id="ss-shortcode-popup-btn">View</a>
+																	</p>
+																</div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_shortcode">
+																		<input type="checkbox" <?php echo (get_option('ss_shortcodes') == 1)?'checked':''; ?> name="ss_shortcode" id="ss_shortcode" class="ss-form-input" />
+																		<div class="uk-switch-slider"></div>
+																	</label>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
-											<div>
-										</td>
+											</div>
+											<div id="login_modal" class="uk-flex-top uk-modal" uk-modal="">
+												<div class="uk-modal-dialog uk-margin-auto-vertical" role="dialog" aria-modal="true">
+													<button class="uk-modal-close-default uk-icon uk-close" type="button" uk-close="" aria-label="Close">
+													</button>
+													<div class="uk-modal-header">
+														<h2 class="uk-modal-title">SS Login Page Settings</h2>
+													</div>
+													<div class="uk-modal-body">
+														<div class="uk-child-width-1-1">
+															<label class="uk-form-label" for="">RSS Feed :</label>
+															<div class="uk-form-controls">
+																<div class="uk-inline">
+																	<label> <input class="uk-checkbox ss-checkbox" type="checkbox" <?php echo (get_option('ss_rss_feed_link') == 1)?'checked ':""; ?> name="ss_rss_feed_link" id="ss_rss_feed_link"/> Featured news </label>
+																</div>
+																<div class="uk-inline">
+																	<label> <input class="uk-checkbox ss-checkbox" type="checkbox" <?php echo (get_option('ss_rss_feed_link_promotion') == 1)?'checked ':""; ?> name="ss_rss_feed_link_promotion" id="ss_rss_feed_link_promotion"/> Promotions </label>
+																</div>
+															</div>
+														</div>
 
-										<td>
-											<div class="ss-toolkit-card">
-												<div class="ss-toolkit-card-content">
-													<h3>SpotLight Custom Functions</h3>
-													<p>Enables custom code to a specific website without editing functions.php.</p>
-
-													<div class="ss-toolkit-card-bottom">
-														<a href="#" class="page-title-action popup" id="ss-custom-function-btn">Functions</a>
-
-														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_custom_functions') == 1)?'checked ':""; ?> name="ss_custom_functions" id="ss_custom_functions" class="ss-form-input">
-															<span class="slider"></span>
-														</label>
+														<div class="uk-child-width-1-1" style="margin-top:25px">
+															<label class="uk-form-label" for="ss-backgroud-image">Background Image URL :</label>
+															<div class="uk-form-controls">
+																<textarea type="text" class="uk-textarea" cols="30" rows="6" name="ss-backgroud-image" id="ss-backgroud-image" placeholder="Background Image URL"><?php echo (get_option('ss_background_image') != null)?get_option('ss_background_image'):""; ?></textarea>
+															</div>
+														</div>
+														<p>
+															<a class="uk-button uk-button-primary ss-save-btn page-title-action popup" id="save-btn">Save</a>
+														</p>
 													</div>
 												</div>
 											</div>
-											<div id="ss-custom-function-popup" class="ss-popup">
-												<div class="ss-popup-content"  style="overflow:scroll"> 
-													<!-- Your content goes here -->
-													<div class="ss-pop-header">
-														<h3>Custom Functions</h3>
-														<a id="ss-custom-function-close-btn" class="ss-close-btn">X</a>
+											<div id="ss-shortcode-popup" class="uk-flex-top uk-modal" uk-modal="">
+												<div class="uk-modal-dialog uk-margin-auto-vertical" role="dialog" aria-modal="true">
+													<button class="uk-modal-close-default uk-icon uk-close" type="button" uk-close="" aria-label="Close">
+													</button>
+													<div class="uk-modal-header">
+														<h2 class="uk-modal-title">SS ToolKit ShortCode's</h2>
 													</div>
-													<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2" style="border:none">
-														<span class="ss_toolkit_message"></span>
-														<div class="container">
-															<div class="row">
-																<div class="col-md-12 ss-toolkit-card2">
-																	<div id="textarea-wrapper">
-																		<div class="textarea-group">
-																			<?php
-																				$textareaDetails = get_option('ss_custom_functions_value');
-																				if (!empty($textareaDetails)) {
-																					$outputArray = array();
-																					foreach ($textareaDetails as $innerArray) {
-																						if (isset($innerArray['is_checked'])) {
-																							foreach ($innerArray['is_checked'] as $index => $isChecked) {
-																								$outputArray[$index + 1] = array(
-																									'is_checked' => $isChecked,
-																									'function_data' => isset($innerArray['function_data'][$index]) ? $innerArray['function_data'][$index] : null
-																								);
-																							}
-																						}
-																					}
-
-																					foreach ($outputArray as $key => $textarea) {
-																						
-																						$checked = '';
-																						if($textarea['is_checked']){
-																							$checked = 'checked';
-																						}
-
-																						echo '<label for="custom_function_' .$key. '"><b>Custom Function #'.$key.'</b></label>';
-																						echo '<label class="custom-function-switch">';
-																						echo '<input type="checkbox" id="custom_function_switch_'.$key.'" class="custom-function-switch" name="custom_function_switch[]" '.$checked.'>';
-																						echo '<span class="slider"></span>';
-																						echo '</label>';
-																						echo '<textarea id="custom_function_'.$key. '" name="custom_functions[]" data-id="'.$key.'" cols="30" rows="6" placeholder="Custom Fucntions #1">' . esc_textarea($textarea['function_data']) . '</textarea>';
-																						echo '<p></p>';
-																					}
-																				} else {
-																					echo '<label for="custom_function_1"><b>Custom Function #1</b></label>';
-																					echo '<label class="custom-function-switch">';
-																					echo '<input type="checkbox" id="custom_function_switch_1" class="custom-function-switch" name="custom_function_switch[]" checked>';
-																					echo '<span class="slider"></span>';
-																					echo '</label>';
-																					echo '<textarea id="custom_function_1" name="custom_functions[]" cols="30" rows="6" data-id="1" placeholder="Custom Fucntions #1"></textarea>';																		
-																				}
-																			?>
+													<div class="uk-modal-body">
+														<table class="uk-table uk-table-striped">
+															<thead>
+																<tr>
+																	<th>Shortcode</th>   
+																	<th>Description</th>  
+																	<th>Variables</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr>
+																	<td><p>[5_star]</p></td>
+																	<td><p>Displays a number of stars out of 5</p></td>
+																	<td><p>colour, icon, number</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss_footer]</p></td>
+																	<td><p>Spotlight Footer Text</p></td>
+																	<td><p>company(site title), prefix (default: Powered by), name(of designer), link, developer(if displayed), developer_link, line_end</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss_logout]</p></td>
+																	<td><p>Logout button</p></td>
+																	<td><p>No variable</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss_lorum]</p></td>
+																	<td><p>Lorum ipsum generator</p></td>
+																	<td><p>p (paragraph), l (lines)</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss_placeholder]</p></td>
+																	<td>Places a placeholder image</td>
+																	<td><p>width, height, bg(999), text_colour(555), text, ext</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss_placekitten]</p></td>
+																	<td><p>Places a stock image of kittens </p></td>
+																	<td><p>width, height</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss_progressbar]</p></td>
+																	<td><p>Shows a progress bar</p></td>
+																	<td><p>class(success), percent, display</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss_sitemap]</p></td>
+																	<td><p>Creates a html site-map</p></td>
+																	<td><p>list_class, box_class</p></td>
+																</tr>
+																<tr>
+																	<td><p>[ss-icon]</p></td>
+																	<td><p>Lord Icon Licence</p></td>
+																	<td><p>id, width, trigger, delay, stroke, primary, secondary</p></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+											<style></style>
+										</div>
+										<!-- Row 2 -->
+										<div class="el-content uk-panel uk-margin-top">
+											<div class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-small uk-grid-match uk-grid" uk-grid="">
+												<div class="uk-first-column">
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">SpotLight Header/Footer</h3>
+														</div>
+														<div class="uk-card-body">
+															<p>Enables custom code for the header/footer for the website.</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column">
+																	<p>
+																		<a class="uk-button uk-button-primary page-title-action popup" href="#content_modal" uk-toggle="" role="button" id="ss-custom-header-popup-btn">Content</a>
+																	</p>
+																</div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_head_foot_content">
+																		<input type="checkbox" <?php echo (get_option('ss_head_foot_content') == 1)?'checked ':""; ?> name="ss_head_foot_content" id="ss_head_foot_content" class="ss-form-input"/>
+																		<div class="uk-switch-slider"></div>
+																	</label>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div>
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">SpotLight Custom Functions</h3>
+														</div>
+														<div class="uk-card-body">
+															<p>Enables custom code to a specific website without editing functions.php.</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column">
+																	<p>
+																		<a class="uk-button uk-button-primary page-title-action popup" href="#function_modal" uk-toggle="" role="button" id="ss-custom-function-btn">Functions</a>
+																	</p>
+																</div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_custom_functions">
+																		<input type="checkbox" <?php echo (get_option('ss_custom_functions') == 1)?'checked ':""; ?> name="ss_custom_functions" id="ss_custom_functions" class="ss-form-input"/>
+																		<div class="uk-switch-slider"></div>
+																	</label>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div>
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">Duplicate Page/Post</h3>
+														</div>
+														<div class="uk-card-body">
+															<p>Enables options for duplicating Page/Post</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column"></div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_duplicate_post_page">
+																		<input type="checkbox" <?php echo (get_option('ss_duplicate_post_page') == 1)?'checked ':""; ?> name="ss_duplicate_post_page" id="ss_duplicate_post_page" class="ss-form-input"/>
+																		<div class="uk-switch-slider"></div>
+																	</label>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div id="content_modal" class="uk-flex-top uk-modal" uk-modal="">
+												<div class="uk-modal-dialog uk-margin-auto-vertical" role="dialog" aria-modal="true">
+													<button class="uk-modal-close-default uk-icon uk-close" type="button" uk-close="" aria-label="Close">
+													</button>
+													<div class="uk-modal-header">
+														<h2 class="uk-modal-title">SS Header/Footer Contents</h2>
+													</div>
+													<div class="uk-modal-body">
+														<div class="uk-grid-margin uk-first-column">
+															<div class="uk-card uk-card-default">
+																<div class="uk-card-body">
+																	<div class="uk-margin">
+																		<label class="uk-form-label" for="form-stacked-text">Header Content: </label>
+																		<div class="uk-form-controls">
+																			<textarea rows="6" class="uk-textarea" name="ss-header-content" id="ss-header-content" placeholder="Header Content"><?php echo (get_option('ss_header_content') != null)?get_option('ss_header_content'):""; ?></textarea>
 																		</div>
 																	</div>
-																	<button id="add-textarea">+</button>
+																	<div class="uk-margin">
+																		<label class="uk-form-label" for="form-stacked-text">Footer Content: </label>
+																		<div class="uk-form-controls">
+																			<textarea rows="6" class="uk-textarea" name="ss-footer-content" id="ss-footer-content" placeholder="Footer Content"><?php echo (get_option('ss_footer_content') != null)?get_option('ss_footer_content'):""; ?></textarea>
+																		</div>
+																	</div>
 																</div>
 															</div>
 														</div>
-														<div class="save-btn-div">
-															<a href="#" class="ss-custom-function-btn ss-btn page-title-action popup" id="save-btn">Save</a>
+														<p>
+															<a class="uk-button uk-button-primary ss-content-save-btn page-title-action popup" id="content-save-btn">Save</a>
+														</p>
+													</div>
+												</div>
+											</div>
+											<div id="function_modal" class="uk-flex-top uk-modal" uk-modal="">
+												<div class="uk-modal-dialog uk-margin-auto-vertical" role="dialog" aria-modal="true">
+													<button class="uk-modal-close-default uk-icon uk-close" type="button" uk-close="" aria-label="Close">
+													</button>
+													<div class="uk-modal-header">
+														<h2 class="uk-modal-title">Custom Functions</h2>
+													</div>
+													<div class="uk-modal-body">
+														<div class="uk-margin">
+															<div id="textarea-wrapper">
+																<!-- <div class="textareaGroup"> -->
+																	<?php
+																		$textareaDetails = get_option('ss_custom_functions_value');
+																		if (!empty($textareaDetails)) {
+																			$outputArray = array();
+																			foreach ($textareaDetails as $innerArray) {
+																				if (isset($innerArray['is_checked'])) {
+																					foreach ($innerArray['is_checked'] as $index => $isChecked) {
+																						$outputArray[$index + 1] = array(
+																							'is_checked' => $isChecked,
+																							'function_data' => isset($innerArray['function_data'][$index]) ? $innerArray['function_data'][$index] : null
+																						);
+																					}
+																				}
+																			}
+
+																			foreach ($outputArray as $key => $textarea) {
+																				$checked = ($textarea['is_checked']) ? 'checked' : '';
+																				?>
+																				<div class="textarea-group" id="textarea_<?php echo $key; ?>_Wrapper">
+																					<div class="textarea-container">
+																						<label class="uk-form-label" for="custom_function_<?php echo $key; ?>"><b>Custom Function #<?php echo $key; ?></b></label>
+																						<label class="uk-switch" for="custom_function_switch">
+																							<input type="checkbox" id="custom_function_switch_<?php echo $key; ?>" class="custom-function-switch" name="custom_function_switch[]" <?php echo $checked; ?>/>
+																							<div class="uk-switch-slider"></div>
+																						</label>
+																						<button type="button" class="remove-custom-function" data-id="<?php echo $key; ?>">-</button>
+																						<textarea class="uk-textarea" id="custom_function_<?php echo $key; ?>" name="custom_functions[]" data-id="<?php echo $key; ?>" cols="30" rows="6" placeholder="Custom Functions #<?php echo $key; ?>"><?php echo esc_textarea($textarea['function_data']); ?></textarea>
+																					</div>
+																				</div>
+																				<p></p>
+																			<?php
+																			}
+																		} else {
+																			?>
+																			<div class="textarea-group" id="textarea_1_Wrapper">
+																				<div class="textarea-container">
+																					<label class="uk-form-label" for="custom_function_1"><b>Custom Function #1</b></label>
+																					<label class="uk-switch" for="custom_function_switch">
+																						<input type="checkbox" id="custom_function_switch_1" class="custom-function-switch" name="custom_function_switch[]" checked/>
+																						<div class="uk-switch-slider"></div>
+																					</label>
+																					<button type="button" class="remove-custom-function" data-id="1">-</button>
+																					<textarea class="uk-textarea" id="custom_function_1" name="custom_functions[]" cols="30" rows="6" data-id="1" placeholder="Custom Functions #1"></textarea>
+																				</div>
+																			</div>
+																			<p></p>
+																		<?php
+																		}
+																	?>
+																<!-- </div> -->
+															</div>
+															<button id="add-textarea">+</button>
 														</div>
 													</div>
 												</div>
-											<div>
-										</td>
-										<td>
-											<div class="ss-toolkit-card">
-												<div class="ss-toolkit-card-content">
-													<h3>Duplicate Page/Post</h3>
-													<p>Enables options for duplicating Page/Post</p>
-
-													<div class="ss-toolkit-card-bottom">
-														<div></div>
-
-														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_duplicate_post_page') == 1)?'checked ':""; ?> name="ss_duplicate_post_page" id="ss_duplicate_post_page" class="ss-form-input">
-															<span class="slider"></span>
-														</label>
-													</div>
-												</div>
 											</div>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<div class="ss-toolkit-card">
-												<div class="ss-toolkit-card-content">
-													<h3>Default Mail Change</h3>
-													<p>Change default "From" email address</p>
-
-													<div class="ss-toolkit-card-bottom">
-														<a href="#" class="page-title-action popup" id="ss-default-mail-btn">Mail</a>
-
-														<label class="toggle-switch">
-															<input type="checkbox" <?php echo (get_option('ss_default_email_settings') == 1)?'checked ':""; ?> name="ss_default_email_settings" id="ss_default_email_settings" class="ss-form-input">
-															<span class="slider"></span>
-														</label>
-													</div>
-												</div>
-											</div>
-											<div id="ss-default-mail-popup" class="ss-popup">
-												<div class="ss-popup-content"  style="overflow:auto"> 
-													<!-- Your content goes here -->
-													<div class="ss-pop-header">
-														<h3>SS Header/Footer Contents</h3>
-														<a id="ss-default-mail-close-btn" class="ss-close-btn">X</a>
-													</div>
-													<div id="ss-toolkit-tab2 content-settings" class="ss-toolkit-tab2" style="border:none">
-														<span class="ss_toolkit_message"></span>
-														<div class="container">
-															<div class="row">
-																<div class="col-md-12 ss-toolkit-card2">
-																	<p></p>
-																	<label for="ss-rss-feed-link"><b>Mail : </b></label>
-																	<p></p>
-																	<input type="text" name="ss_default_mail" id="ss_default_mail" value="<?php echo (get_option('ss_default_email_value') != null)? get_option('ss_default_email_value') :""; ?>">
+											<style></style>
+										</div>
+										<!-- Row 3 -->
+										<div class="el-content uk-panel uk-margin-top">
+											<div class="uk-child-width-1-2@s uk-child-width-1-3@m uk-grid-small uk-grid-match uk-grid" uk-grid="">
+												<div class="uk-first-column">
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">Default Mail Change</h3>
+														</div>
+														<div class="uk-card-body">
+															<p>Change default "From" email address</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column">
+																	<p>
+																		<a class="uk-button uk-button-primary page-title-action popup" href="#email_modal" uk-toggle="" role="button" id="ss-default-mail-popup-btn">Mail</a>
+																	</p>
+																</div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_head_foot_content">
+																		<input type="checkbox" <?php echo (get_option('ss_default_email_settings') == 1)?'checked ':""; ?> name="ss_default_email_settings" id="ss_default_email_settings" class="ss-form-input"/>
+																		<div class="uk-switch-slider"></div>
+																	</label>
 																</div>
 															</div>
 														</div>
-														<div class="save-btn-div">
-															<a href="#" class="ss-email-save-btn ss-btn page-title-action popup" id="email-save-btn">Save</a>
+													</div>
+												</div>
+											</div>
+											<div id="email_modal" class="uk-flex-top uk-modal" uk-modal="">
+												<div class="uk-modal-dialog uk-margin-auto-vertical" role="dialog" aria-modal="true">
+													<button class="uk-modal-close-default uk-icon uk-close" type="button" uk-close="" aria-label="Close">
+													</button>
+													<div class="uk-modal-header">
+														<h2 class="uk-modal-title">Default Mail Change</h2>
+													</div>
+													<div class="uk-modal-body">
+														<div class="uk-grid-margin uk-first-column">
+															<div class="uk-card uk-card-default">
+																<div class="uk-card-body">
+																	<div class="uk-margin">
+																		<label class="uk-form-label" for="ss_default_mail">Mail: </label>
+																		<div class="uk-form-controls">
+																			<input type="text" name="ss_default_mail" id="ss_default_mail" value="<?php echo (get_option('ss_default_email_value') != null) ? get_option('ss_default_email_value') : ""; ?>" class="uk-input">
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<p>
+															<a class="uk-button uk-button-primary ss-content-save-btn page-title-action popup" id="content-save-btn">Save</a>
+														</p>
+													</div>
+												</div>
+											</div>
+											<style></style>
+										</div>
+									</li>
+									<li class="el-item uk-margin-remove-first-child" id="uk-tab-4" role="tabpanel" aria-labelledby="uk-tab-3" style=""> 
+										<h3 class="el-title uk-margin-top uk-margin-remove-bottom">Settings</h3>
+										<input type="hidden" name="from_toolkit_form" id="from_toolkit_form" value="settings_form">
+										<div class="el-content uk-panel uk-margin-top">
+											<form class="uk-form-stacked">
+												<div class="uk-child-width-1-1 uk-grid uk-grid-stack" uk-grid="">
+													<div class="uk-first-column">
+														<div class="uk-card uk-card-default">
+															<div class="uk-card-header">General</div>
+															<div class="uk-card-body">
+																<div class="uk-child-width-1-1">
+																	<div class="uk-inline">
+																		<label> <input class="uk-checkbox ss-form-input" type="checkbox" name="ss_removal_prevent" id="sstoolkit-removal" <?php echo (get_option('ss_removal_prevent') == 1)? 'checked':''; ?>/> Prevent deactivation/removal of SS Toolkit </label>
+																	</div>
+																	<div class="uk-inline">
+																		<label> <input class="uk-checkbox ss-form-input" type="checkbox" name="ss_access_toolkit" id="spotlight-access"  <?php echo (get_option('ss_access_toolkit') == 1)? 'checked':""; ?>/> Prevent access if user is not “Spotlight” </label>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+													<div class="uk-grid-margin uk-first-column">
+														<div class="uk-card uk-card-default">
+															<div class="uk-card-header">API Keys</div>
+															<div class="uk-card-body">
+																<div class="uk-margin">
+																	<label class="uk-form-label" for="form-stacked-text">Google Analytics (GA4)</label>
+																	<div class="uk-form-controls">
+																		<input class="uk-input ss-form-input" id="form-stacked-text ss_api_key" name="ss_api_key" type="text" value="<?php echo (get_option('ss_api') != null)? get_option('ss_api') :""; ?>"/>
+																	</div>
+																</div>
+																<div class="uk-margin">
+																	<label class="uk-form-label" for="form-stacked-text">Google Map API</label>
+																	<div class="uk-form-controls">
+																		<input class="uk-input ss-form-input" id="form-stacked-text ss_map_api_key" type="text" value="<?php echo (get_option('ss_google_map_api') != null)? get_option('ss_google_map_api') :""; ?>"/>
+																	</div>
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
-											<div>
-										</td>
-									</tr>
-								</table>
-							</div>
-						</form>
-					<?php } ?>
-					<?php if($active_tab == 'settings'){?>
-						<form action="" id="ss_toolkit_settings_form">
-							<input type="hidden" name="from_toolkit_form" id="from_toolkit_form" value="settings_form"> 
-							<div id="ss-toolkit-tab2 settings" class="ss-toolkit-tab2">
-								<div class="container">
-									<div class="row">
-										<div class="col-md-12 ss-toolkit-card2">
-											<h3>General</h3>
-											<input type="checkbox" name="ss_removal_prevent" id="sstoolkit-removal" <?php echo (get_option('ss_removal_prevent') == 1)? 'checked':''; ?> class="ss-form-input"> Prevent deactivation/removal of SS Toolkit </br>
-											<input type="checkbox" name="ss_access_toolkit" id="spotlight-access"  <?php echo (get_option('ss_access_toolkit') == 1)? 'checked':""; ?> class="ss-form-input"> Prevent access if user is not "Spotlight"
+											</form>
 										</div>
-										<div class="col-md-12 ss-toolkit-card2">
-											<h3>API Keys</h3>
-											<p><span>GA 4:</span><input type="text" name="ss_api_key" id="ss_api_key" class="ss-form-input" value="<?php echo (get_option('ss_api') != null)? get_option('ss_api') :""; ?>"></p>
-
-											<h3>Google Map API</h3>
-											<p><span>API :</span><input type="text" name="ss_map_api_key" id="ss_map_api_key" class="ss-form-input" value="<?php echo (get_option('ss_google_map_api') != null)? get_option('ss_google_map_api') :""; ?>"></p>
-										</div>
-									</div>
-								</div>
+									</li>
+								</ul>
 							</div>
-						</form>
-					<?php } ?>
+						</div>
+					</div>
 				</div>
 			</div>
-		</div>
-		
+		</section>
 		<?php }else{
 			$html = '<h2 style="padding: 10px;text-align: center;">Access to the plugin page is not granted. Please reach out to the administrator for authorization.</h2>';
 			echo $html;
@@ -801,6 +881,10 @@ class Ss_Toolkit {
 				// Get existing options from wp_options
 				$existing_options = get_option('ss_custom_functions_value', array());
 				
+				if (!is_array($existing_options)) {
+					$existing_options = array(); // Initialize it as an empty array
+				}
+
 				// Update or add the new option
 				$existing_options[$textarea_id] = array(
 					'is_checked' => $is_checked,
@@ -833,19 +917,11 @@ class Ss_Toolkit {
 				}
 
 				$content .= "?>";
-			
-				// Write content to the file
-				$result = file_put_contents($file_path, $content);
-			
-				if ($result !== false) {
-					// Success message
-					$message =  'Content successfully written to the file.';
-				} else {
-					// Error message
-					$message =  'Error writing content to the file.';
+				
+				if (!empty(array_filter($functionDataArray))) {
+					$result = file_put_contents($file_path, $content);
+					$message = "Custom function saved successfully";
 				}
-			
-				// $message = "Custom function saved successfully";
 			}
 
 			if(get_option('ss_header_content') != $_POST['ss_header_content']){
@@ -894,6 +970,11 @@ class Ss_Toolkit {
 			if(get_option('ss_api') != $_POST['ss_api_key']){
 				update_option('ss_api',$_POST['ss_api_key']);
 				$message = "Google Analytics API key updated";
+			}
+
+			if(get_option('ss_google_map_api') != $_POST['ss_google_map_api']){
+				update_option('ss_google_map_api',$_POST['ss_google_map_api']);
+				$message = "Google Map API key updated";
 			}
 		}
 
