@@ -241,7 +241,7 @@ jQuery(document).ready(function($) {
 	});
 });
 
-$(document).on('click', '.remove-custom-function', function() {
-	var id = $(this).data('id');
-	$('#textarea_' + id + '_Wrapper').remove();
+jQuery(document).on('click', '.remove-custom-function', function() {
+	var id = jQuery(this).data('id');
+	jQuery('#textarea_' + id + '_Wrapper').remove();
 });
