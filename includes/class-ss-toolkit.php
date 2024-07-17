@@ -916,16 +916,16 @@ class Ss_Toolkit {
 
 				$content = "<?php\n\n";
 
-				foreach ($functionDataArray as $function) {
-					$content .= $function . "\n\n";
+				if (!empty($functionDataArray)) {
+					foreach ($functionDataArray as $function) {
+						$content .= $function . "\n\n";
+					}
 				}
 
 				$content .= "?>";
 				
-				if (!empty(array_filter($functionDataArray))) {
-					$result = file_put_contents($file_path, $content);
-					$message = "Custom function saved successfully";
-				}
+				$result = file_put_contents($file_path, $content);
+				$message = "Custom function saved successfully";
 			}
 
 			if(get_option('ss_header_content') != $_POST['ss_header_content']){
