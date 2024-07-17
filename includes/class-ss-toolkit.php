@@ -233,8 +233,12 @@ class Ss_Toolkit {
 
 	function ss_toolkit_enqueueAdmin() {
 	
-		wp_enqueue_script( $this->get_plugin_name(), plugin_dir_url( dirname( __FILE__ ) ) . '/admin/js/ss-toolkit-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->get_plugin_name(), plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/ss-toolkit-admin.js', array( 'jquery' ), $this->version, false );
 		wp_localize_script('ss-toolkit', 'ss_toolkit_ajax_url',array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ));
+
+		wp_enqueue_style( 'custom-login-uikit', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/css/uikit.min.css' );
+		wp_enqueue_script( 'custom-login-uikitjs', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit.min.js', array( 'jquery' ), $this->version, false );  
+		wp_enqueue_script( 'custom-login-uikitminjs', plugin_dir_url( dirname( __FILE__ ) ) . 'admin/js/uikit-icons.min.js', array( 'jquery' ), $this->version, false ); 
     }
 
 	/**
@@ -610,10 +614,10 @@ class Ss_Toolkit {
 																<!-- <div class="textareaGroup"> -->
 																	<?php
 																		$textareaDetails = get_option('ss_custom_functions_value');
-																		if (!empty($textareaDetails)) {
+																		if (!empty($textareaDetails) && isset($textareaDetails[""]["is_checked"]) && isset($textareaDetails[""]["function_data"])) {
 																			$outputArray = array();
 																			foreach ($textareaDetails as $innerArray) {
-																				if (isset($innerArray['is_checked'])) {
+																				if (!empty($innerArray['is_checked']) && !empty($innerArray['function_data'])) {
 																					foreach ($innerArray['is_checked'] as $index => $isChecked) {
 																						$outputArray[$index + 1] = array(
 																							'is_checked' => $isChecked,
@@ -683,7 +687,7 @@ class Ss_Toolkit {
 																	</p>
 																</div>
 																<div class="ss-bottom-switch-btn">
-																	<label class="uk-switch" for="ss_head_foot_content">
+																	<label class="uk-switch" for="ss_default_email_settings">
 																		<input type="checkbox" <?php echo (get_option('ss_default_email_settings') == 1)?'checked ':""; ?> name="ss_default_email_settings" id="ss_default_email_settings" class="ss-form-input"/>
 																		<div class="uk-switch-slider"></div>
 																	</label>
