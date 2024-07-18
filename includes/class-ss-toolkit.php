@@ -126,6 +126,12 @@ class Ss_Toolkit {
 			//Hook to change wp from mail id
 			add_filter( 'wp_mail_from', array($this,'custom_wp_mail_from'));
 		}
+
+		if(get_option('ss_disable_outgoing_emails_settings') == 1){
+			//Hook to disable all outgoing emails
+			add_filter( 'wp_mail', array($this,'disable_wp_emails'));
+		}
+
 		//Hook to add custom header content
 		add_action('wp_head', array($this,'custom_header_content'));
 
@@ -696,6 +702,26 @@ class Ss_Toolkit {
 														</div>
 													</div>
 												</div>
+												<div>
+													<div class="uk-card uk-card-default uk-card-small">
+														<div class="uk-card-header">
+															<h3 class="uk-card-title">Block Outgoing Emails</h3>
+														</div>
+														<div class="uk-card-body">
+															<p>Disable all outgoing emails</p>
+															<div class="uk-child-width-1-2 uk-grid ss-bottom-btn" uk-grid="">
+																<div class="uk-first-column">
+																</div>
+																<div class="ss-bottom-switch-btn">
+																	<label class="uk-switch" for="ss_disable_outgoing_emails_settings">
+																		<input type="checkbox" <?php echo (get_option('ss_disable_outgoing_emails_settings') == 1)?'checked ':""; ?> name="ss_disable_outgoing_emails_settings" id="ss_disable_outgoing_emails_settings" class="ss-form-input"/>
+																		<div class="uk-switch-slider"></div>
+																	</label>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 											<div id="email_modal" class="uk-flex-top uk-modal" uk-modal="">
 												<div class="uk-modal-dialog uk-margin-auto-vertical" role="dialog" aria-modal="true">
@@ -916,16 +942,18 @@ class Ss_Toolkit {
 
 				$content = "<?php\n\n";
 
-				if (!empty($functionDataArray)) {
-					foreach ($functionDataArray as $function) {
-						$content .= $function . "\n\n";
-					}
-				}
+				 if (!empty($functionDataArray)) {
+			        foreach ($functionDataArray as $function) {
+			            $content .= $function . "\n\n";
+			        }
+			    }
 
 				$content .= "?>";
 				
-				$result = file_put_contents($file_path, $content);
-				$message = "Custom function saved successfully";
+				if (!empty(array_filter($functionDataArray))) {
+					$result = file_put_contents($file_path, $content);
+					$message = "Custom function saved successfully";
+				}
 			}
 
 			if(get_option('ss_header_content') != $_POST['ss_header_content']){
@@ -950,6 +978,12 @@ class Ss_Toolkit {
 
 				update_option('ss_default_email_value', $_POST['ss_default_mail']);
 				$message = "Default Email Id Updated";
+			}
+		
+			if(get_option('ss_disable_outgoing_emails_settings') != $_POST['ss_disable_outgoing_emails_settings']){
+
+				update_option('ss_disable_outgoing_emails_settings', $_POST['ss_disable_outgoing_emails_settings']);
+				$message = "Disable outgoing emails options updated";
 			}
 
 			if(get_option('ss_duplicate_post_page') != $_POST['ss_duplicate_post_page']){
@@ -1539,6 +1573,19 @@ class Ss_Toolkit {
 	function custom_wp_mail_from( $original_email_address ) {
 		$emailid = get_option('ss_default_email_value');
 		return $emailid;
+	}
+
+	/**
+	 * Function to disable all outgoing emails
+	 *  
+	 * 
+	 * @since    2.0.0
+	 * @access   public
+	 */
+	function disable_wp_emails( $args ) {
+	    // Overwrite the recipient email addresses to an empty array
+	    $args['to'] = [];
+	    return $args;
 	}
 
 	/**
