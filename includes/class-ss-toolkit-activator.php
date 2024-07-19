@@ -52,5 +52,6 @@ class Ss_Toolkit_Activator {
 		add_option( 'ss_duplicate_post_page', 0);
 		add_option( 'ss_default_email_settings', 0);
 		add_option( 'ss_default_email_value', 0);
+		add_option( 'ss_disable_outgoing_emails_settings', 0);
 	}
 }

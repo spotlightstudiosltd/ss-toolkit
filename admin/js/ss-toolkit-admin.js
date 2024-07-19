@@ -136,6 +136,8 @@ jQuery(document).ready(function($) {
 		var ss_default_mail = jQuery('#ss_default_mail').val();
 		var ss_default_email_settings = (jQuery('#ss_default_email_settings').is(":checked"))?1:0;
 
+		var ss_disable_outgoing_emails_settings = (jQuery('#ss_disable_outgoing_emails_settings').is(":checked"))?1:0;
+
 		var ss_duplicate_post_page = (jQuery('#ss_duplicate_post_page').is(":checked"))?1:0;
 
         jQuery('textarea[name="custom_functions[]"]').each(function() {
@@ -171,6 +173,7 @@ jQuery(document).ready(function($) {
 				'ss_header_content' : ss_header_content,
 				'ss_default_email_settings' : ss_default_email_settings,
 				'ss_default_mail' : ss_default_mail,
+				'ss_disable_outgoing_emails_settings' : ss_disable_outgoing_emails_settings,
 				'ss_duplicate_post_page' : ss_duplicate_post_page,
 				'ss_google_map_api' : ss_google_map_api,
 				'from_toolkit_form' : from_toolkit_form
