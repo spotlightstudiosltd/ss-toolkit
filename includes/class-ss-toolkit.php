@@ -1712,7 +1712,6 @@ class Ss_Toolkit {
 			#yootheme-name {font-size:0;}
 			#yootheme-name:after {content: "Spotlight Pro Parent Theme"; font-size:16px}
 			.parent-theme {display: none;}
-			[data-slug="yootheme"] {display: none;}
 		</style>';
 	}
 
