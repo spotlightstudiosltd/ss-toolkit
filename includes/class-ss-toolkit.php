@@ -1723,6 +1723,7 @@ class Ss_Toolkit {
 	 * @access   public
 	 */
 	function spot_translate( $translated ) {
+
 		$words = array(
 			// 'word to translate' => 'translation'
 			'YOOtheme' => 'Spotlight',
@@ -1740,6 +1741,7 @@ class Ss_Toolkit {
 			'Rank' => 'Spotlight'
 		);
 		$translated = str_ireplace(  array_keys($words),  $words,  $translated );
+			
 		return $translated;
 	}
 
@@ -1786,3 +1788,4 @@ class Ss_Toolkit {
 		include_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/custom_functions.php';
 	}
 }	
+
