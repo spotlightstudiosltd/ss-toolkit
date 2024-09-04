@@ -524,7 +524,7 @@ class Ss_Toolkit {
 												<div class="uk-first-column">
 													<div class="uk-card uk-card-default uk-card-small">
 														<div class="uk-card-header">
-															<h3 class="uk-card-title">SpotLight Header/Footer</h3>
+															<h3 class="uk-card-title">Spotlight Header/Footer</h3>
 														</div>
 														<div class="uk-card-body">
 															<p>Enables custom code for the header/footer for the website.</p>
@@ -547,7 +547,7 @@ class Ss_Toolkit {
 												<div>
 													<div class="uk-card uk-card-default uk-card-small">
 														<div class="uk-card-header">
-															<h3 class="uk-card-title">SpotLight Custom Functions</h3>
+															<h3 class="uk-card-title">Spotlight Custom Functions</h3>
 														</div>
 														<div class="uk-card-body">
 															<p>Enables custom code to a specific website without editing functions.php.</p>
