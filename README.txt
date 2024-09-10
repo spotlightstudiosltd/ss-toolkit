@@ -40,12 +40,12 @@ This plugin has a few tools, primarily to advertise our service, provide Spotlig
 
 == Change Log ==
 
+ = 2.0.2 =
+  
+  - Update test and text changes
+
  = 2.0.0 =
   
   - Initial release
   - The previous version has undergone a transformation with the introduction of a new design.
   - Introducing Additional Enhancements in the Latest Iteration
-
- = 2.0.2 =
-  
-  - Update test and text changes

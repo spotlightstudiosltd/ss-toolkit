@@ -9,7 +9,7 @@
  * that starts the plugin.
  *
  * @link              https://spotlightstudios.co.uk/
- * @since             2.0.1
+ * @since             2.0.0
  * @package           SS_Toolkit
  *
  * @wordpress-plugin
