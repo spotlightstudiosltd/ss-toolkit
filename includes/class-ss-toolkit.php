@@ -852,7 +852,7 @@ class Ss_Toolkit {
 			<ul>
 				<li><span class='dashicons dashicons-admin-site'></span> <strong>Website:</strong> <a href='https://spotlightstudios.co.uk' target='_blank'>spotlightstudios.co.uk</a></li>
 				<li><span class='dashicons dashicons-businessman'></span> <strong>Client Portal:</strong> <a href='https://portal.spotlightstudios.co.uk/' target='_blank'>Log in</a></li>
-				<li><span class='dashicons dashicons-book-alt'></span> <strong>Spotlight Project Management Login:</strong> <a href='http://projects.spotlightstudios.co.uk/' target='_blank'>Browse</a></li>  
+				<li><span class='dashicons dashicons-book-alt'></span> <strong>Project Management:</strong> <a href='http://projects.spotlightstudios.co.uk/' target='_blank'>Login</a></li>  
 				<li><span class='dashicons dashicons-email-alt'></span> <strong>Contact:</strong> <a href='mailto:support@spotlightstudios.co.uk'>support@spotlightstudios.co.uk</a></li>
 			</ul>
 		</div>
