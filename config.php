@@ -15,4 +15,4 @@ define('GITHUBPROJECTREPO', 'ss-toolkit');
 define('GITHUBBRANCH', 'main');
 
 // DEFINE AccessToken created in GITHUB
-define('ACCESSTOKEN', '');
+define('ACCESSTOKEN', ''); 
