@@ -1,5 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700&display=swap');
 html, body { overflow: hidden; }
-body {background: transparent; }
+body { font-family: 'Work Sans', sans-serif !important; background: transparent; }
     #login h1 { display: none; }
     #login .user-pass-wrap { display: none; }
 .page-row { 
@@ -209,9 +210,6 @@ body {background: transparent; }
     border: none;
     box-shadow: none;
     background: transparent;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: center;
 }
 
 .error,.success-message{
@@ -241,4 +239,3 @@ body {background: transparent; }
     font-weight: 700;
     color: red;
 }
-

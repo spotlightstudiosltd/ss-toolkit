@@ -64,26 +64,12 @@ if(!empty($news_feed_array) && !empty($promotion_feed_array)){
 
 function merge($a1, $a2)
 {
-    // echo '<pre>';
-    // print_r($a1);
-    // // print_r($a2);
-    // die;
     $a3 = [];
-    // $len = count($a1);
-    $lenA = count($a1);
-    $lenB = count($a2);
-
-    $len = max($lenA, $lenB);
-
+    $len = count($a1);
     for($i=0;$i<$len;$i++)
     {
-        if($i < $lenA){
-            $a3 []= $a1[$i];
-        }
-
-        if($i < $lenB){
-            $a3 []= $a2[$i];
-        }
+        $a3 []= $a1[$i];
+        $a3 []= $a2[$i];
     }
     $a3 = array_filter($a3);
     return $a3;
