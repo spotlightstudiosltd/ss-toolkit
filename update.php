@@ -21,12 +21,18 @@ class ToolkitGitHubPluginUpdater {
         $this->accessToken = $accessToken;
 
         // Add Authorization Token to authToken_download_package
-		add_filter( 'upgrader_pre_download',
-            function() {
-                add_filter( 'http_request_args', [ $this, 'authToken_download_package' ], 15, 2 );
-                return false; // upgrader_pre_download filter default return value.
+        add_filter('upgrader_pre_download', function ($reply, $package, $upgrader) {
+            // The slug of your custom plugin
+            $plugin_slug = 'ss-toolkit'; 
+
+            // Get the current plugin being upgraded
+            if (isset($upgrader->skin->plugin) && strpos($upgrader->skin->plugin, $plugin_slug) !== false) {
+                // Add the authToken_download_package filter only if it's your custom plugin
+                add_filter('http_request_args', [$this, 'authToken_download_package'], 15, 2);
             }
-        );
+
+            return $reply; // Return the default value
+        }, 10, 3);
     }
 
     /**
@@ -55,7 +61,7 @@ class ToolkitGitHubPluginUpdater {
 
         // We need the access token for private repos
         if ( !empty( $this->accessToken ) ) {
-			$args['headers']['Authorization'] = "bearer {$this->accessToken}";
+            $args['headers']['Authorization'] = "bearer {$this->accessToken}";
         }
 
         // Get the results 
@@ -68,7 +74,7 @@ class ToolkitGitHubPluginUpdater {
         if ( is_array( $this->githubAPIResult ) ) {
             $this->githubAPIResult = $this->githubAPIResult[0];
         }
-		
+        
     }
 
     /**
@@ -87,13 +93,14 @@ class ToolkitGitHubPluginUpdater {
         $this->GetPluginData();
         $this->getPluginReleaseInfo();
 
+
         // Check the versions if we need to do an update
-        $doUpdate = version_compare( $this->githubAPIResult->tag_name, $transient->checked[$this->slug] );
-		
+        $doUpdate = version_compare($this->githubAPIResult->tag_name, $transient->checked[$this->slug]);
+
         // Update the transient to include our updated plugin data
-        if ( $doUpdate == 1 ) {
+        if ($doUpdate == 1) {
             $package = $this->githubAPIResult->zipball_url;
-			$args = [];
+            $args = [];
 
             $obj = new stdClass();
             $obj->slug = $this->slug;
@@ -126,18 +133,18 @@ class ToolkitGitHubPluginUpdater {
         $this->getPluginReleaseInfo();
 
         // Add our plugin information
-        $response->name	 = $this->pluginData["Name"];
-		$response->slug	 = $this->pluginFile;
-		$response->requires = '6.0.0';
-		$response->tested = '6.3';
-		$response->version = $this->githubAPIResult->tag_name;
-		$response->author = $this->pluginData["AuthorName"];
-		$response->author_profile = $this->pluginData["AuthorURI"];
-		$response->last_updated = $this->githubAPIResult->published_at;
-		$response->homepage = $this->pluginData["PluginURI"];
-		$response->short_description = $this->pluginData["Description"];
-		$response->sections['Description']	= $this->pluginData["Description"];
-		$response->sections['Updates'] = $this->githubAPIResult->body;
+        $response->name  = $this->pluginData["Name"];
+        $response->slug  = $this->pluginFile;
+        $response->requires = '6.0.0';
+        $response->tested = '6.3';
+        $response->version = $this->githubAPIResult->tag_name;
+        $response->author = $this->pluginData["AuthorName"];
+        $response->author_profile = $this->pluginData["AuthorURI"];
+        $response->last_updated = $this->githubAPIResult->published_at;
+        $response->homepage = $this->pluginData["PluginURI"];
+        $response->short_description = $this->pluginData["Description"];
+        $response->sections['Description']  = $this->pluginData["Description"];
+        $response->sections['Updates'] = $this->githubAPIResult->body;
         $response->download_link = $this->githubAPIResult->zipball_url;
 
         return $response;
@@ -176,14 +183,14 @@ class ToolkitGitHubPluginUpdater {
      * @since 2.0.0
      */
     public function authToken_download_package( $args, $url ) {
-		if ( null !== $args['filename'] ) {
-			if( $this->accessToken ) { 
-				$args = array_merge( $args, array( "headers" => array( "Authorization" => "token {$this->accessToken}" ) ) );
-			}
-		}
-		
-		remove_filter( 'http_request_args', [ $this, 'authToken_download_package' ] );
+        if ( null !== $args['filename'] ) {
+            if( $this->accessToken ) { 
+                $args = array_merge( $args, array( "headers" => array( "Authorization" => "token {$this->accessToken}" ) ) );
+            }
+        }
+        
+        remove_filter( 'http_request_args', [ $this, 'authToken_download_package' ] );
 
-		return $args;
-	}
+        return $args;
+    }
 }

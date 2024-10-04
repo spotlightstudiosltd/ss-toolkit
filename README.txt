@@ -5,7 +5,7 @@ Donate link: https://spotlightstudios.co.uk/
 Tags: comments, spam
 Requires at least: 6.0
 Tested up to: 6.3
-Stable tag: 2.0.5
+Stable tag: 2.2.3
 Requires PHP : 7.0 or above 
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -40,25 +40,9 @@ This plugin has a few tools, primarily to advertise our service, provide Spotlig
 
 == Change Log ==
 
-= 2.0.5 =
+ = 2.2.3 =
   
-  - testing with different permissions
-
- = 2.0.4 =
-  
-  - testing with different permissions
-
- = 2.0.3 =
-  
-  - fixed minor bugs
-
-   = 2.0.2 =
-  
-  - test 2.0.2
-
- = 2.0.1 =
-  
-  - test 2.0.1
+  - Update test and text changes
 
  = 2.0.0 =
   
